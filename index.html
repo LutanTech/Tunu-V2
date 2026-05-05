@@ -1,0 +1,843 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TUNU Publishers | Empowering African Voices</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --magenta: #8B008B;
+            --dark-magenta: #4B004B;
+            --orangered: #FF4500;
+            --white: #FFFFFF;
+            --light-bg: #f9f9f9;
+            --gray-text: #666;
+            --border-color: #eee;
+            --shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--light-bg);
+            color: #333;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .top-bar {
+            background: var(--white);
+            border-bottom: 1px solid var(--border-color);
+            padding: 8px 0;
+            display: none;
+        }
+
+        @media (min-width: 768px) {
+            .top-bar { display: block; }
+        }
+
+        .top-bar-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 14px;
+        }
+
+        .contact-info {
+            display: flex;
+            gap: 20px;
+        }
+
+        .contact-item i {
+            color: var(--magenta);
+            margin-right: 8px;
+        }
+
+        .search-area {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .search-box {
+            display: flex;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .search-box input {
+            padding: 5px 10px;
+            border: none;
+            outline: none;
+            width: 200px;
+        }
+
+        .search-btn {
+            background: var(--magenta);
+            color: white;
+            border: none;
+            padding: 5px 15px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .search-btn:hover { background: var(--dark-magenta); }
+
+        .cart-trigger {
+            background: var(--magenta);
+            color: white;
+            padding: 8px 24px;
+            border-radius: 50px;
+            font-weight: 700;
+            border: none;
+            cursor: pointer;
+            text-transform: uppercase;
+            position: relative;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: transform 0.2s, box-shadow 0.2s;
+            box-shadow: var(--shadow);
+        }
+
+        .cart-trigger:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(139, 0, 139, 0.3);
+        }
+
+        .cart-count {
+            background: var(--orangered);
+            color: white;
+            font-size: 11px;
+            min-width: 20px;
+            height: 20px;
+            padding: 0 4px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        header {
+            background: var(--magenta);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+        }
+
+        .logo-area {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+        }
+
+        .logo-img {
+            height: 48px;
+            background: white;
+            padding: 4px;
+            border-radius: 4px;
+            margin-right: 12px;
+        }
+
+        .brand-text {
+            color: white;
+        }
+
+        .brand-text h1 {
+            font-size: 24px;
+            line-height: 1;
+        }
+
+        .brand-text p {
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        nav {
+            display: none;
+        }
+
+        @media (min-width: 1024px) {
+            nav {
+                display: flex;
+                gap: 5px;
+            }
+        }
+
+        .nav-link {
+            color: white;
+            text-decoration: none;
+            padding: 8px 15px;
+            border-radius: 4px;
+            text-transform: uppercase;
+            font-size: 13px;
+            font-weight: 500;
+            transition: background 0.3s;
+        }
+
+        .nav-link:hover {
+            background: rgba(255, 69, 0, 0.8);
+        }
+
+        .hero-carousel {
+            height: 550px;
+            position: relative;
+            background: #1a1a1a;
+            overflow: hidden;
+        }
+
+        .carousel-slide {
+            position: absolute;
+            inset: 0;
+            opacity: 0;
+            transition: opacity 1s ease-in-out;
+            display: flex;
+            align-items: center;
+        }
+
+        .carousel-slide.active {
+            opacity: 1;
+            z-index: 1;
+        }
+
+        .carousel-img {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0.6;
+        }
+
+        .carousel-content {
+            position: relative;
+            z-index: 2;
+            color: white;
+            max-width: 700px;
+            padding: 20px;
+        }
+
+        .carousel-content h2 {
+            font-size: clamp(32px, 5vw, 56px);
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+            font-weight: 800;
+        }
+
+        .carousel-content p {
+            font-size: 18px;
+            margin-bottom: 35px;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 14px 32px;
+            border-radius: 4px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            cursor: pointer;
+            border: none;
+            transition: all 0.3s;
+            text-decoration: none;
+        }
+
+        .btn-primary {
+            background: var(--orangered);
+            color: white;
+            box-shadow: 0 4px 15px rgba(255, 69, 0, 0.3);
+        }
+
+        .btn-primary:hover {
+            background: #e63e00;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(255, 69, 0, 0.4);
+        }
+
+        .btn-secondary {
+            background: var(--magenta);
+            color: white;
+            box-shadow: 0 4px 15px rgba(139, 0, 139, 0.3);
+        }
+
+        .btn-secondary:hover {
+            background: var(--dark-magenta);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(139, 0, 139, 0.4);
+        }
+
+        .btn-small {
+            padding: 10px 16px;
+            font-size: 12px;
+            width: 100%;
+            justify-content: center;
+        }
+
+        .carousel-nav {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 12px;
+            z-index: 3;
+        }
+
+        .dot {
+            width: 12px;
+            height: 12px;
+            background: rgba(255,255,255,0.3);
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .dot.active {
+            background: var(--orangered);
+            width: 30px;
+            border-radius: 10px;
+        }
+
+        .category-section {
+            padding: 80px 0;
+        }
+
+        .category-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+        }
+
+        .category-card {
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            text-align: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            transition: transform 0.3s;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .category-card:hover {
+            transform: translateY(-10px);
+        }
+
+        .category-card img {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .category-card h3 {
+            margin-bottom: 20px;
+            font-size: 1.2rem;
+        }
+
+        .tabs-header {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 40px;
+            flex-wrap: wrap;
+        }
+
+        .tab-btn {
+            background: white;
+            border: 2px solid var(--magenta);
+            color: var(--magenta);
+            padding: 12px 30px;
+            font-weight: 700;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .tab-btn.tab-active {
+            background: var(--magenta);
+            color: white;
+        }
+
+        .book-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+
+        @media (min-width: 768px) {
+            .book-grid { grid-template-columns: repeat(3, 1fr); }
+        }
+
+        @media (min-width: 1024px) {
+            .book-grid { grid-template-columns: repeat(5, 1fr); }
+        }
+
+        .book-card {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+            position: relative;
+            transition: all 0.3s;
+            border: 1px solid var(--border-color);
+        }
+
+        .book-card:hover {
+            box-shadow: var(--shadow);
+            border-color: transparent;
+        }
+
+        .discount-badge {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            background: var(--orangered);
+            color: white;
+            font-size: 11px;
+            font-weight: 800;
+            padding: 4px 10px;
+            border-radius: 4px;
+            z-index: 5;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+
+        .book-img-wrapper {
+            height: 200px;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .book-img-wrapper img {
+            max-height: 100%;
+            max-width: 100%;
+            border-radius: 4px;
+            transition: transform 0.3s;
+        }
+
+        .book-card:hover .book-img-wrapper img {
+            transform: scale(1.05);
+        }
+
+        .cart-drawer {
+            position: fixed;
+            top: 0;
+            right: -450px;
+            width: 100%;
+            max-width: 450px;
+            height: 100%;
+            background: white;
+            z-index: 2000;
+            box-shadow: -5px 0 25px rgba(0,0,0,0.15);
+            transition: right 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .cart-drawer.open { right: 0; }
+
+        .cart-header {
+            padding: 25px;
+            background: var(--magenta);
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .cart-items {
+            flex: 1;
+            overflow-y: auto;
+            padding: 25px;
+        }
+
+        .cart-item {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 20px;
+            align-items: center;
+        }
+
+        .cart-item img {
+            width: 60px;
+            height: 80px;
+            object-fit: contain;
+            background: #f4f4f4;
+            border-radius: 4px;
+        }
+
+        .checkout-btn {
+            width: 100%;
+            background: var(--orangered);
+            color: white;
+            border: none;
+            padding: 18px;
+            border-radius: 4px;
+            font-weight: 800;
+            cursor: pointer;
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            transition: background 0.3s;
+        }
+
+        .checkout-btn:hover { background: #e63e00; }
+
+        .overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.6);
+            display: none;
+            z-index: 1500;
+            backdrop-filter: blur(2px);
+        }
+
+        .whatsapp-float {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: #25d366;
+            color: white;
+            width: 65px;
+            height: 65px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 35px;
+            z-index: 1000;
+            text-decoration: none;
+            box-shadow: 0 10px 25px rgba(37, 211, 102, 0.4);
+            transition: transform 0.3s;
+        }
+
+        .whatsapp-float:hover { transform: scale(1.1) rotate(5deg); }
+    </style>
+</head>
+<body>
+
+    <div class="overlay" id="overlay" onclick="closeCart()"></div>
+
+    <div class="cart-drawer" id="cart-drawer">
+        <div class="cart-header">
+            <h3><i class="fas fa-shopping-basket"></i> Your Basket</h3>
+            <button onclick="closeCart()" style="background:none; border:none; color:white; cursor:pointer; font-size:24px;"><i class="fas fa-times-circle"></i></button>
+        </div>
+        <div class="cart-items" id="cart-items-list">
+            <div style="text-align:center; color:#999; margin-top:50px;">
+                <i class="fas fa-shopping-cart fa-4x" style="margin-bottom:20px; opacity:0.3;"></i>
+                <p>Your cart is empty</p>
+            </div>
+        </div>
+        <div class="cart-footer" style="padding:25px; border-top:1px solid #eee;">
+            <div style="display:flex; justify-content:space-between; font-weight:800; font-size:20px; margin-bottom:20px;">
+                <span>Total:</span>
+                <span id="cart-total" style="color:var(--magenta);">KES 0</span>
+            </div>
+            <button class="checkout-btn">
+                <i class="fas fa-lock"></i> SECURE CHECKOUT
+            </button>
+        </div>
+    </div>
+
+    <div class="top-bar">
+        <div class="container top-bar-content">
+            <div class="contact-info">
+                <span class="contact-item"><i class="fas fa-envelope"></i> tunupublishers@gmail.com</span>
+                <span class="contact-item"><i class="fas fa-phone-alt"></i> +254 722 68 21 29</span>
+            </div>
+            <div class="search-area">
+                <div class="search-box">
+                    <input type="text" placeholder="Search for books...">
+                    <button class="search-btn"><i class="fas fa-search"></i></button>
+                </div>
+                <button class="cart-trigger" onclick="openCart()">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span>CART</span>
+                    <span class="cart-count" id="cart-count">0</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <header>
+        <div class="container header-content">
+            <a href="#" class="logo-area">
+                <img src="https://i.ibb.co/CKRYPD4p/image.png" alt="TUNU Logo" class="logo-img">
+                <div class="brand-text">
+                    <h1>TUNU</h1>
+                    <p>Publishers</p>
+                </div>
+            </a>
+            <nav>
+                <a href="#" class="nav-link">Home</a>
+                <a href="#" class="nav-link">Books</a>
+                <a href="#" class="nav-link">Junior School</a>
+                <a href="#" class="nav-link">Revision</a>
+                <a href="#" class="nav-link">About Us</a>
+                <a href="#" class="nav-link">Contact</a>
+            </nav>
+            <button class="mobile-menu-btn" onclick="openCart()" style="background:none; border:none; color:white; font-size:24px; cursor:pointer;">
+                <i class="fas fa-shopping-cart"></i>
+            </button>
+        </div>
+    </header>
+
+    <section class="hero-carousel">
+        <div class="carousel-slide active">
+            <img src="https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=1600" class="carousel-img" alt="Education">
+            <div class="container">
+                <div class="carousel-content">
+                    <h2>Empowering the Next Generation</h2>
+                    <p>High-quality, CBC-approved publishing and educational resources that inspire African voices.</p>
+                    <button class="btn btn-primary" onclick="openCart()">
+                        <i class="fas fa-book-open"></i> EXPLORE SERIES
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="carousel-slide">
+            <img src="https://images.unsplash.com/photo-1588072432836-e10032774350?w=1600" class="carousel-img" alt="Kids Learning">
+            <div class="container">
+                <div class="carousel-content">
+                    <h2>Creative Arts & Readers</h2>
+                    <p>Nurturing creativity and artistic expression with culturally relevant materials for our young learners.</p>
+                    <button class="btn btn-secondary" onclick="openCart()">
+                        <i class="fas fa-paint-brush"></i> VIEW READERS
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="carousel-nav" id="carousel-dots">
+            <div class="dot active" onclick="setSlide(0)"></div>
+            <div class="dot" onclick="setSlide(1)"></div>
+        </div>
+    </section>
+
+    <section class="category-section">
+        <div class="container">
+            <div class="category-grid">
+                <div class="category-card">
+                    <img src="https://broken-image-link-test.com/fail.jpg" onerror="this.src='https://i.ibb.co/CKRYPD4p/image.png'; this.style.objectFit='contain';" alt="Primary">
+                    <h3>Primary School</h3>
+                    <button class="btn btn-secondary btn-small" onclick="openCart()">
+                        <i class="fas fa-eye"></i> SHOP PRIMARY
+                    </button>
+                </div>
+                <div class="category-card">
+                    <img src="https://images.unsplash.com/photo-1588072432836-e10032774350?w=300" alt="Workbooks">
+                    <h3>Revision Books</h3>
+                    <button class="btn btn-secondary btn-small" onclick="openCart()">
+                        <i class="fas fa-eye"></i> VIEW REVISION
+                    </button>
+                </div>
+                <div class="category-card">
+                    <img src="/resources/images/creative_readers.png" alt="Readers">
+                    <h3>Creative Readers</h3>
+                    <button class="btn btn-secondary btn-small" onclick="openCart()">
+                        <i class="fas fa-eye"></i> EXPLORE READERS
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="tabs-section" style="padding-bottom: 80px;">
+        <div class="container">
+            <div class="tabs-header">
+                <button onclick="switchTab('rating')" id="tab-rating" class="tab-btn tab-active">
+                    <i class="fas fa-star"></i> TOP RATED
+                </button>
+                <button onclick="switchTab('selling')" id="tab-selling" class="tab-btn">
+                    <i class="fas fa-fire"></i> BEST SELLING
+                </button>
+            </div>
+            <div id="book-container" class="book-grid"></div>
+        </div>
+    </section>
+
+    <footer style="background: var(--dark-magenta); color: white; padding: 80px 0 30px;">
+        <div class="container">
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 40px; margin-bottom: 50px;">
+                <div>
+                    <h3 style="margin-bottom:20px; display:flex; align-items:center; gap:10px;">
+                        <img src="https://i.ibb.co/CKRYPD4p/image.png" height="30" alt=""> TUNU
+                    </h3>
+                    <p style="color:#ccc; font-size:14px;">Bringing the best of African education and creativity to every learner across the continent.</p>
+                </div>
+                <div>
+                    <h4 style="margin-bottom:20px; border-left:4px solid var(--orangered); padding-left:15px;">CONTACT</h4>
+                    <p style="color:#ccc; font-size:14px; margin-bottom:10px;"><i class="fas fa-phone-alt"></i> 0722 68 21 29</p>
+                    <p style="color:#ccc; font-size:14px;"><i class="fas fa-envelope"></i> info@tunupublishers.co.ke</p>
+                </div>
+                <div>
+                    <h4 style="margin-bottom:20px; border-left:4px solid var(--orangered); padding-left:15px;">LOCATION</h4>
+                    <p style="color:#ccc; font-size:14px;"><i class="fas fa-map-marker-alt"></i> Harambee Sacco Plaza, Nairobi</p>
+                </div>
+            </div>
+            <div style="border-top: 1px solid rgba(255,255,255,0.1); padding-top: 30px; text-align: center; color: #888;">
+                <p>&copy; 2026 TUNU Publishers. All Rights Reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <a href="https://wa.me/254722682129" target="_blank" class="whatsapp-float"><i class="fab fa-whatsapp"></i></a>
+
+    <script>
+        let cart = [];
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.carousel-slide');
+        const dots = document.querySelectorAll('.dot');
+
+        function setSlide(index) {
+            slides[currentSlide].classList.remove('active');
+            dots[currentSlide].classList.remove('active');
+            currentSlide = index;
+            slides[currentSlide].classList.add('active');
+            dots[currentSlide].classList.add('active');
+        }
+
+        setInterval(() => {
+            let next = (currentSlide + 1) % slides.length;
+            setSlide(next);
+        }, 5000);
+
+        const booksData = {
+            rating: [
+                { id: 1, title: "Mathematical Activities", grade: "Grade 1", price: 450, oldPrice: 500, discount: "10%", img: "https://images.unsplash.com/photo-1543004629-ff569f872783?w=300" },
+                { id: 2, title: "Lawi na Njiwa", grade: "Grade 3", price: 320, oldPrice: 400, discount: "20%", img: "https://images.unsplash.com/photo-1544947950-fa07a98d237f?w=300" },
+                { id: 3, title: "English Language", grade: "Grade 1", price: 480, oldPrice: 550, discount: "12%", img: "https://images.unsplash.com/photo-1512820790803-83ca734da794?w=300" }
+            ],
+            selling: [
+                { id: 4, title: "Science & Tech", grade: "Grade 5", price: 650, oldPrice: 750, discount: "13%", img: "https://images.unsplash.com/photo-1532012197267-da84d127e765?w=300" },
+                { id: 5, title: "Mpira wa Sumbi", grade: "Grade 1", price: 420, oldPrice: 500, discount: "16%", img: "https://images.unsplash.com/photo-1512820790803-83ca734da794?w=300" }
+            ]
+        };
+
+        function renderBooks(category) {
+            const container = document.getElementById('book-container');
+            const books = booksData[category];
+            container.innerHTML = '';
+            books.forEach(book => {
+                container.innerHTML += `
+                    <div class="book-card">
+                        <span class="discount-badge">SAVE ${book.discount}</span>
+                        <div class="book-img-wrapper">
+                            <img src="${book.img}" onerror="this.src='https://i.ibb.co/CKRYPD4p/image.png'; this.style.objectFit='contain';" alt="${book.title}">
+                        </div>
+                        <h4 style="font-size:15px; margin-bottom:5px;">${book.title}</h4>
+                        <p style="color:#888; font-size:12px; margin-bottom:10px;">${book.grade}</p>
+                        <div style="font-weight:bold; margin-bottom:15px;">
+                            <span style="text-decoration:line-through; color:#aaa; font-size:12px; margin-right:8px;">KES ${book.oldPrice}</span>
+                            <span style="color:var(--magenta);">KES ${book.price}</span>
+                        </div>
+                        <button onclick="addToCart(${book.id}, '${category}')" class="btn btn-secondary btn-small">
+                            <i class="fas fa-cart-plus"></i> ADD TO CART
+                        </button>
+                    </div>
+                `;
+            });
+        }
+
+        function switchTab(category) {
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('tab-active'));
+            document.getElementById(`tab-${category}`).classList.add('tab-active');
+            renderBooks(category);
+        }
+
+        function addToCart(id, category) {
+            const book = booksData[category].find(b => b.id === id);
+            cart.push(book);
+            updateCartUI();
+            openCart();
+        }
+
+        function updateCartUI() {
+            const list = document.getElementById('cart-items-list');
+            const count = document.getElementById('cart-count');
+            const total = document.getElementById('cart-total');
+            
+            count.innerText = cart.length;
+            
+            if (cart.length === 0) {
+                list.innerHTML = `
+                    <div style="text-align:center; color:#999; margin-top:50px;">
+                        <i class="fas fa-shopping-cart fa-4x" style="margin-bottom:20px; opacity:0.3;"></i>
+                        <p>Your cart is empty</p>
+                    </div>`;
+                total.innerText = 'KES 0';
+                return;
+            }
+
+            let sum = 0;
+            list.innerHTML = '';
+            cart.forEach((item, index) => {
+                sum += item.price;
+                list.innerHTML += `
+                    <div class="cart-item">
+                        <img src="${item.img}" onerror="this.src='https://i.ibb.co/CKRYPD4p/image.png';" alt="">
+                        <div style="flex:1">
+                            <h5 style="font-size:14px; margin-bottom:4px;">${item.title}</h5>
+                            <p style="color:var(--magenta); font-weight:800;">KES ${item.price}</p>
+                        </div>
+                        <button onclick="removeFromCart(${index})" style="background:none; border:none; color:#ff4d4d; cursor:pointer; padding:10px;">
+                            <i class="fas fa-trash-alt"></i>
+                        </button>
+                    </div>
+                `;
+            });
+            total.innerText = `KES ${sum}`;
+        }
+
+        function removeFromCart(index) {
+            cart.splice(index, 1);
+            updateCartUI();
+        }
+
+        function openCart() {
+            document.getElementById('cart-drawer').classList.add('open');
+            document.getElementById('overlay').style.display = 'block';
+        }
+
+        function closeCart() {
+            document.getElementById('cart-drawer').classList.remove('open');
+            document.getElementById('overlay').style.display = 'none';
+        }
+
+        window.onload = () => renderBooks('rating');
+    </script>
+</body>
+</html>
