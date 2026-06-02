@@ -1,0 +1,725 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Catalogue | TUNU Publishers</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --magenta: #8B008B;
+            --dark-magenta: #4B004B;
+            --orangered: #FF4500;
+            --white: #FFFFFF;
+            --light-bg: #f9f9f9;
+            --gray-text: #666;
+            --border-color: #eee;
+            --shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--light-bg);
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .top-bar {
+            background: var(--white);
+            border-bottom: 1px solid var(--border-color);
+            padding: 8px 0;
+        }
+
+        @media (max-width: 768px) {
+            .top-bar { display: none; }
+        }
+
+        .top-bar-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 14px;
+        }
+
+        .search-area {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .search-box {
+            display: flex;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .search-box input {
+            padding: 5px 10px;
+            border: none;
+            outline: none;
+            width: 200px;
+        }
+
+        .search-btn {
+            background: var(--magenta);
+            color: white;
+            border: none;
+            padding: 5px 15px;
+            cursor: pointer;
+        }
+
+        .cart-trigger {
+            background: var(--magenta);
+            color: white;
+            padding: 8px 24px;
+            border-radius: 50px;
+            font-weight: 700;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: var(--shadow);
+        }
+
+        .cart-count {
+            background: var(--orangered);
+            color: white;
+            font-size: 11px;
+            min-width: 20px;
+            height: 20px;
+            padding: 0 4px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        header {
+            background: var(--magenta);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+        }
+
+        .logo-area {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+        }
+
+        .logo-img {
+            height: 40px;
+            background: white;
+            padding: 4px;
+            border-radius: 4px;
+            margin-right: 12px;
+        }
+
+        .brand-text h1 {
+            color: white;
+            font-size: 20px;
+            line-height: 1;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            padding: 8px 15px;
+            font-size: 13px;
+            text-transform: uppercase;
+        }
+
+        .page-banner {
+            background: var(--dark-magenta);
+            color: white;
+            padding: 40px 0;
+            margin-bottom: 20px;
+        }
+
+        .catalogue-wrapper {
+            display: grid;
+            grid-template-columns: 250px 1fr;
+            gap: 30px;
+            margin-bottom: 50px;
+        }
+
+        .sidebar-box {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border: 1px solid var(--border-color);
+        }
+
+        .sidebar-box h4 {
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--light-bg);
+            color: var(--magenta);
+        }
+
+        .filter-list { list-style: none; }
+        .filter-item {
+            padding: 8px 0;
+            font-size: 14px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: color 0.2s;
+        }
+        .filter-item:hover { color: var(--orangered); }
+        .filter-item input { accent-color: var(--magenta); }
+
+        .mobile-filter-bar {
+            display: none;
+            padding: 15px 0;
+            justify-content: space-between;
+            align-items: center;
+            background: white;
+            margin-bottom: 20px;
+            border-bottom: 1px solid var(--border-color);
+            position: sticky;
+            top: 64px;
+            z-index: 900;
+        }
+
+        @media (max-width: 992px) {
+            .catalogue-wrapper { grid-template-columns: 1fr; }
+            .sidebar {
+                position: fixed;
+                top: 0;
+                left: -300px;
+                width: 280px;
+                height: 100%;
+                background: white;
+                z-index: 2100;
+                padding: 20px;
+                overflow-y: auto;
+                transition: left 0.3s ease;
+                box-shadow: 5px 0 15px rgba(0,0,0,0.1);
+            }
+            .sidebar.open { left: 0; }
+            .mobile-filter-bar { display: flex; }
+        }
+
+        .book-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 20px;
+        }
+
+        #aside{
+            position:sticky;
+            top:0;
+        }
+
+        @media (max-width: 480px) {
+            .book-grid {
+                grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+                gap: 10px;
+            }
+        }
+
+        .book-card {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            position: relative;
+            border: 1px solid var(--border-color);
+            transition: transform 0.3s, box-shadow 0.3s;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .book-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow);
+        }
+
+        .book-img-wrapper {
+            height: 200px;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .book-img-wrapper img {
+            max-height: 100%;
+            max-width: 100%;
+            border-radius: 4px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .discount-badge {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background: var(--orangered);
+            color: white;
+            font-size: 10px;
+            font-weight: 800;
+            padding: 3px 8px;
+            border-radius: 4px;
+            z-index: 2;
+        }
+
+        .btn-small {
+            background: var(--magenta);
+            color: white;
+            border: none;
+            padding: 10px 12px;
+            width: 100%;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 700;
+            margin-top: 10px;
+            transition: background 0.2s;
+        }
+
+        .btn-small:hover {
+            background: var(--dark-magenta);
+        }
+
+        #loading-trigger {
+            padding: 40px;
+            text-align: center;
+            grid-column: 1 / -1;
+        }
+
+        .loader {
+            width: 30px;
+            height: 30px;
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid var(--magenta);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            display: inline-block;
+        }
+
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+        .cart-drawer {
+            position: fixed;
+            top: 0;
+            right: -450px;
+            width: 100%;
+            max-width: 450px;
+            height: 100%;
+            background: white;
+            z-index: 2000;
+            box-shadow: -5px 0 25px rgba(0,0,0,0.15);
+            transition: right 0.4s;
+            display: flex;
+            flex-direction: column;
+        }
+        .cart-drawer.open { right: 0; }
+        .overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.6);
+            display: none;
+            z-index: 1500;
+        }
+        
+        .cart-item {
+            display: flex;
+            gap: 12px;
+            padding: 15px 0;
+            border-bottom: 1px solid #eee;
+            align-items: center;
+        }
+        .cart-item img {
+            width: 50px;
+            height: 65px;
+            object-fit: cover;
+            border-radius: 4px;
+        }
+
+        .mobile-filter-btn {
+            background: var(--magenta);
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 4px;
+            font-size: 14px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .author-text {
+            font-size: 11px;
+            color: #888;
+            font-style: italic;
+            margin-bottom: 5px;
+            display: block;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="overlay" id="overlay" onclick="closeAllDrawers()"></div>
+    
+    <div class="cart-drawer" id="cart-drawer">
+        <div style="padding:25px; background:var(--magenta); color:white; display:flex; justify-content:space-between; align-items:center;">
+            <h3>Your Basket</h3>
+            <button onclick="closeCart()" style="background:none; border:none; color:white; cursor:pointer; font-size:20px;"><i class="fas fa-times"></i></button>
+        </div>
+        <div id="cart-items-list" style="flex:1; overflow-y:auto; padding:20px;"></div>
+        <div style="padding:20px; border-top:1px solid #eee;">
+            <div style="display:flex; justify-content:space-between; font-weight:800; margin-bottom:15px;">
+                <span>Total:</span>
+                <span id="cart-total" style="color:var(--magenta);">KES 0</span>
+            </div>
+            <button class="btn-small" style="padding:15px; background:var(--orangered);">CHECKOUT NOW</button>
+        </div>
+    </div>
+
+    <div class="top-bar">
+        <div class="container top-bar-content">
+            <div class="contact-info">
+                <span><i class="fas fa-phone-alt"></i> +254 722 68 21 29</span>
+            </div>
+            <div class="search-area">
+                <div class="search-box">
+                    <input type="text" id="search-input" placeholder="Search title, grade or author...">
+                    <button class="search-btn" id="search-trigger"><i class="fas fa-search"></i></button>
+                </div>
+                <button class="cart-trigger" onclick="openCart()">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span class="cart-count" id="cart-count">0</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <header>
+        <div class="container header-content">
+            <a href="index.html" class="logo-area">
+                <img src="https://i.ibb.co/CKRYPD4p/image.png" class="logo-img">
+                <div class="brand-text"><h1>TUNU</h1></div>
+            </a>
+            <nav>
+                <a href="index.html">Home</a>
+                <a href="#">Shop</a>
+                <a href="#">About</a>
+            </nav>
+        </div>
+    </header>
+
+    <section class="page-banner">
+        <div class="container">
+            <h2>Explore Our Collection</h2>
+            <p>Quality educational resources for African learners.</p>
+        </div>
+    </section>
+
+    <div class="container">
+        <div class="mobile-filter-bar">
+            <button class="mobile-filter-btn" onclick="toggleSidebar()">
+                <i class="fas fa-filter"></i> Filters & Sort
+            </button>
+            <span id="results-count" style="font-size: 13px; color: #666;">Showing results...</span>
+        </div>
+
+        <div class="catalogue-wrapper">
+            <aside class="sidebar" id="sidebar">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;" class="mobile-only-header">
+                    <h3 style="color: var(--magenta);">Filters</h3>
+                    <button onclick="toggleSidebar()" style="background: none; border: none; font-size: 20px; display: none;" id="close-sidebar-btn"><i class="fas fa-times"></i></button>
+                </div>
+                <div class="sidebar-box">
+                    <h4>Categories / Grades</h4>
+                    <ul class="filter-list" id="category-filters">
+                        <li class="filter-item"><label><input type="radio" name="cat" value="all" checked> All Books</label></li>
+                        <li class="filter-item"><label><input type="radio" name="cat" value="Primary"> Primary (Grades 1-6)</label></li>
+                        <li class="filter-item"><label><input type="radio" name="cat" value="Junior"> Junior Secondary (Grades 7-9)</label></li>
+                        <li class="filter-item"><label><input type="radio" name="cat" value="Revision"> Revision Guides</label></li>
+                        <li class="filter-item"><label><input type="radio" name="cat" value="Readers"> Creative Readers</label></li>
+                    </ul>
+                </div>
+                <div class="sidebar-box">
+                    <h4>Sort By</h4>
+                    <ul class="filter-list" id="sort-filters">
+                        <li class="filter-item"><label><input type="radio" name="sort" value="rating" checked> Popularity</label></li>
+                        <li class="filter-item"><label><input type="radio" name="sort" value="newest"> Newest Arrivals</label></li>
+                        <li class="filter-item"><label><input type="radio" name="sort" value="price_low"> Price: Low to High</label></li>
+                        <li class="filter-item"><label><input type="radio" name="sort" value="price_high"> Price: High to Low</label></li>
+                    </ul>
+                </div>
+            </aside>
+
+            <main>
+                <div id="book-grid" class="book-grid"></div>
+                <div id="loading-trigger">
+                    <div class="loader"></div>
+                    <p style="font-size:12px; color:#999; margin-top:10px;">Loading more books...</p>
+                </div>
+            </main>
+        </div>
+    </div>
+    <script src="/resources/base/base.js"></script>
+
+    <script>
+        let cart = [];
+        let allBooks = [];
+        let displayedBooksCount = 0;
+        const perPage = 8;
+        let isLoading = false;
+        let activeCategory = 'all';
+        let activeSort = 'rating';
+        let searchQuery = '';
+
+        async function fetchInitialData() {
+            try {
+                const response = await fetch(API_URL + '/get_books');
+                const data = await response.json();
+                allBooks = data.rating || [];
+                applyFiltersAndReset();
+            } catch (error) {
+                console.error("Failed to fetch books", error);
+                document.getElementById('book-grid').innerHTML = "<p>Error loading books. Please check your connection.</p>";
+            }
+        }
+
+        function applyFiltersAndReset() {
+            document.getElementById('book-grid').innerHTML = '';
+            displayedBooksCount = 0;
+            loadMore();
+            
+            if (window.innerWidth <= 992) {
+                toggleSidebar(false);
+            }
+        }
+
+        function getFilteredBooks() {
+            let filtered = [...allBooks];
+
+            if (activeCategory !== 'all') {
+                filtered = filtered.filter(b => {
+                    const gradeNum = parseInt(b.grade);
+                    if (activeCategory === 'Primary') return gradeNum >= 1 && gradeNum <= 6;
+                    if (activeCategory === 'Junior') return gradeNum >= 7 && gradeNum <= 9;
+                    if (activeCategory === 'Revision') return b.category === 'Revision' || b.title.toLowerCase().includes('revision');
+                    if (activeCategory === 'Readers') return b.category === 'Readers' || b.title.toLowerCase().includes('reader');
+                    return true;
+                });
+            }
+
+            if (searchQuery) {
+                const q = searchQuery.toLowerCase();
+                filtered = filtered.filter(b => 
+                    b.title.toLowerCase().includes(q) || 
+                    b.grade.toLowerCase().includes(q) ||
+                    (b.authors && b.authors.toLowerCase().includes(q))
+                );
+            }
+
+            if (activeSort === 'price_low') filtered.sort((a, b) => a.newPrice - b.newPrice);
+            else if (activeSort === 'price_high') filtered.sort((a, b) => b.newPrice - a.newPrice);
+            else if (activeSort === 'newest') {
+                filtered.sort((a, b) => new Date(b.added_at) - new Date(a.added_at));
+            }
+            
+            document.getElementById('results-count').innerText = `${filtered.length} books found`;
+            return filtered;
+        }
+
+        function loadMore() {
+            if (isLoading) return;
+            
+            const filtered = getFilteredBooks();
+            if (displayedBooksCount >= filtered.length) {
+                document.getElementById('loading-trigger').style.display = 'none';
+                if (filtered.length === 0) {
+                   document.getElementById('book-grid').innerHTML = "<p style='grid-column: 1/-1; text-align:center; padding: 50px; color:#666;'>No books found matching your criteria.</p>";
+                }
+                return;
+            }
+
+            isLoading = true;
+            document.getElementById('loading-trigger').style.display = 'block';
+
+            setTimeout(() => {
+                const nextSet = filtered.slice(displayedBooksCount, displayedBooksCount + perPage);
+                renderBooks(nextSet);
+                displayedBooksCount += nextSet.length;
+                isLoading = false;
+                
+                if (displayedBooksCount >= filtered.length) {
+                    document.getElementById('loading-trigger').style.display = 'none';
+                }
+            }, 400);
+        }
+
+        function renderBooks(books) {
+            const grid = document.getElementById('book-grid');
+            books.forEach(book => {
+                const disc = book.oldPrice > 0 ? Math.round(((book.oldPrice - book.newPrice) / book.oldPrice) * 100) : 0;
+                const card = document.createElement('div');
+                card.className = 'book-card';
+                card.innerHTML = `
+                    ${disc > 0 ? `<span class="discount-badge">SAVE ${disc}%</span>` : ''}
+                    <div>
+                        <div class="book-img-wrapper">
+                            <img src="${book.url}" onerror="this.src='https://i.ibb.co/CKRYPD4p/image.png';" alt="${book.title}">
+                        </div>
+                        <span class="author-text">${book.authors || 'TUNU Publishers'}</span>
+                        <h4 style="font-size:14px; margin-bottom:5px; line-height:1.3;">${book.title}</h4>
+                        <p style="font-size:12px; color:var(--magenta); font-weight:bold;">Grade ${book.grade}</p>
+                    </div>
+                    <div>
+                        <div style="margin:12px 0;">
+                            ${book.oldPrice > 0 ? `<span style="text-decoration:line-through; color:#999; font-size:11px; margin-right:5px;">KES ${book.oldPrice}</span>` : ''}
+                            <span style="color:var(--orangered); font-weight:800; font-size:16px;">KES ${book.newPrice}</span>
+                        </div>
+                        <button onclick="addToCart('${book.id}')" class="btn-small">
+                            <i class="fas fa-shopping-basket"></i> ADD TO BASKET
+                        </button>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        const observer = new IntersectionObserver((entries) => {
+            if (entries[0].isIntersecting) loadMore();
+        }, { threshold: 0.1 });
+        observer.observe(document.getElementById('loading-trigger'));
+
+        document.getElementById('category-filters').addEventListener('change', (e) => {
+            activeCategory = e.target.value;
+            applyFiltersAndReset();
+        });
+
+        document.getElementById('sort-filters').addEventListener('change', (e) => {
+            activeSort = e.target.value;
+            applyFiltersAndReset();
+        });
+
+        document.getElementById('search-trigger').onclick = () => {
+            searchQuery = document.getElementById('search-input').value;
+            applyFiltersAndReset();
+        };
+
+        document.getElementById('search-input').onkeyup = (e) => {
+            if (e.key === 'Enter') {
+                searchQuery = e.target.value;
+                applyFiltersAndReset();
+            }
+        };
+
+        function toggleSidebar(show) {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('overlay');
+            const isClosing = show === false || sidebar.classList.contains('open');
+            
+            if (isClosing) {
+                sidebar.classList.remove('open');
+                overlay.style.display = 'none';
+            } else {
+                sidebar.classList.add('open');
+                overlay.style.display = 'block';
+                document.getElementById('close-sidebar-btn').style.display = 'block';
+            }
+        }
+
+        function closeAllDrawers() {
+            closeCart();
+            toggleSidebar(false);
+        }
+
+        function addToCart(id) {
+            const book = allBooks.find(b => b.id === id);
+            if (book) {
+                cart.push({...book, cartId: Date.now() + Math.random()});
+                updateCartUI();
+                openCart();
+            }
+        }
+
+        function updateCartUI() {
+            const list = document.getElementById('cart-items-list');
+            const count = document.getElementById('cart-count');
+            const total = document.getElementById('cart-total');
+            
+            count.innerText = cart.length;
+            
+            if (cart.length === 0) {
+                list.innerHTML = `
+                    <div style="text-align:center; padding:40px 20px;">
+                        <i class="fas fa-shopping-bag" style="font-size:40px; color:#eee; margin-bottom:15px;"></i>
+                        <p style="color:#999;">Your basket is empty</p>
+                    </div>
+                `;
+                total.innerText = 'KES 0';
+                return;
+            }
+
+            let sum = 0;
+            list.innerHTML = '';
+            cart.forEach((item, index) => {
+                sum += item.newPrice;
+                list.innerHTML += `
+                    <div class="cart-item">
+                        <img src="${item.url}" onerror="this.src='https://i.ibb.co/CKRYPD4p/image.png';" alt="">
+                        <div style="flex:1">
+                            <h5 style="font-size:13px; font-weight:bold; margin-bottom:2px;">${item.title}</h5>
+                            <p style="font-size:11px; color:#666; margin-bottom:4px;">Grade ${item.grade}</p>
+                            <p style="color:var(--magenta); font-size:13px; font-weight:800;">KES ${item.newPrice}</p>
+                        </div>
+                        <button onclick="removeFromCart(${index})" style="background:none; border:none; color:#ff4d4d; cursor:pointer; padding:5px;"><i class="fas fa-trash-alt"></i></button>
+                    </div>
+                `;
+            });
+            total.innerText = `KES ${sum.toLocaleString()}`;
+        }
+
+        function removeFromCart(index) {
+            cart.splice(index, 1);
+            updateCartUI();
+        }
+
+        function openCart() {
+            document.getElementById('cart-drawer').classList.add('open');
+            document.getElementById('overlay').style.display = 'block';
+        }
+
+        function closeCart() {
+            document.getElementById('cart-drawer').classList.remove('open');
+            if (!document.getElementById('sidebar').classList.contains('open')) {
+                document.getElementById('overlay').style.display = 'none';
+            }
+        }
+
+        window.onload = fetchInitialData;
+    </script>
+</body>
+</html>

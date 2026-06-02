@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TUNU Publishers | Login</title>
+    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"> -->
+    <script src="/resources/base/utils.js"></script>
+    <style>
+        :root {
+            --magenta: #8B008B;
+            --dark-magenta: #4B004B;
+            --orangered: #FF4500;
+            --white: #FFFFFF;
+            --bg: #f8f9fa;
+            --text: #333;
+            --border: #dee2e6;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', system-ui, sans-serif; background: var(--bg); color: var(--text); height: 100vh; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+
+        .login-card {
+            background: var(--white);
+            width: 100%;
+            max-width: 400px;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            border: 1px solid var(--border);
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .login-header {
+            text-align: center;
+            margin-bottom: 35px;
+        }
+
+        .logo { height: 50px; margin-bottom: 15px; cursor: pointer; }
+        
+        .login-header h2 {
+            color: var(--dark-magenta);
+            font-size: 1.5rem;
+            font-weight: 800;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        .form-group i {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #999;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 12px 15px 12px 45px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            outline: none;
+            font-family: inherit;
+            transition: border-color 0.3s;
+        }
+
+        .form-input:focus {
+            border-color: var(--magenta);
+        }
+
+        .login-btn {
+            width: 100%;
+            padding: 12px;
+            background: var(--magenta);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.3s;
+            margin-top: 10px;
+        }
+
+        .login-btn:hover {
+            background: var(--dark-magenta);
+        }
+
+        .form-options {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 15px 0;
+            font-size: 0.85rem;
+        }
+
+        .forgot-link {
+            color: var(--magenta);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .divider {
+            margin: 25px 0;
+            display: flex;
+            align-items: center;
+            text-align: center;
+            color: #999;
+            font-size: 0.8rem;
+        }
+
+        .divider::before, .divider::after {
+            content: '';
+            flex: 1;
+            border-bottom: 1px solid #eee;
+        }
+
+        .divider:not(:empty)::before { margin-right: .5em; }
+        .divider:not(:empty)::after { margin-left: .5em; }
+
+        .social-login {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+        }
+
+        .social-btn {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            border: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: white;
+            cursor: pointer;
+            transition: transform 0.2s, background 0.2s;
+        }
+
+        .social-btn:hover {
+            background: #f0f0f0;
+            transform: translateY(-2px);
+        }
+
+        .register-text {
+            text-align: center;
+            margin-top: 30px;
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        .register-text a {
+            color: var(--magenta);
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        #message {
+            margin-top: 15px;
+            padding: 10px;
+            border-radius: 6px;
+            text-align: center;
+            font-size: 0.85rem;
+            display: none;
+        }
+
+        #message.error { background: #fee2e2; color: #b91c1c; display: block; }
+        #message.success { background: #dcfce7; color: #15803d; display: block; }
+
+    </style>
+</head>
+<body>
+
+    <div class="login-card">
+        <div class="login-header">
+            <img src="/assets/images/logo.png" alt="TUNU Logo" class="logo" onclick="location.href='index.html'">
+            <h2>Welcome Back</h2>
+            <p style="font-size: 0.85rem; color: #666; margin-top: 5px;">Login to your publisher account</p>
+        </div>
+
+        <form id="loginForm" onsubmit="handleLogin(event)">
+            <div class="form-group">
+                <i class="fas fa-envelope"></i>
+                <input type="text" maxLength="10" class="form-input" id="id" placeholder="Enter Staff ID" required>
+            </div>
+            
+            <div class="form-group">
+                <i class="fas fa-lock"></i>
+                <input type="password" class="form-input" id="password" placeholder="Password" required>
+            </div>
+
+            <div class="form-options">
+                <label style="display: flex; align-items: center; gap: 5px; cursor: pointer;">
+                    <input type="checkbox" id="remember"> Remember me
+                </label>
+                <a href="#" class="forgot-link">Forgot Password?</a>
+            </div>
+
+            <button type="submit" class="login-btn">Login</button>
+
+            <div id="message"></div>
+        </form>
+
+
+        <div class="register-text">
+            Don't have an account? <a href="#">Contact Admin</a>
+        </div>
+    </div>
+
+    <script src="/resources/base/base.js"></script>
+    <script>
+
+        setTimeout(()=>{
+           console.log(getCookie('token'))
+        }, 3000)
+        function handleLogin(e) {
+            e.preventDefault();
+            const id = document.getElementById('id').value;
+            const password = document.getElementById('password').value;
+            const message = document.getElementById('message');
+            const remember = document.getElementById('remember');
+
+            if (id && password) {
+                fetch(`${API_URL}/api/login/auth/0`, {
+                    method:'POST',
+                    headers:{
+                        'Content-Type':'application/json'
+                    }, body:JSON.stringify({'id':id, 'password':password, 'rem': remember.checked ? 'True' : 'False'})
+                })
+                .then(r=>r.json())
+                .then(data=>{
+                    if(data.staff){
+                        message.className = 'success';
+                        message.innerText = 'Login successful! Redirecting...';
+                        setCookie('token', data.staff.token)
+                        setCookie('sid', data.staff.id)
+                        setCookie('is_admin', data.staff.is_admin)
+                        
+                    }
+                })
+                .catch(err=>{
+                    message.className = 'error';
+                        message.innerText = err.message;
+                        
+                        
+                })
+                
+            } else {
+                message.className = 'error';
+                message.innerText = 'Please check your credentials.';
+            }
+        }
+    </script>
+</body>
+</html>

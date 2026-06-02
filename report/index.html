@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TUNU Publishers | Sales & Visit Report</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --magenta: #8B008B;
+            --dark-magenta: #4B004B;
+            --orangered: #FF4500;
+            --white: #FFFFFF;
+            --light-bg: #f4f4f9;
+            --shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        body {
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--light-bg);
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 10px;
+        }
+
+        .report-container {
+            background: var(--white);
+            width: 100%;
+            max-width: 500px;
+            padding: 40px;
+            border-radius: 4px;
+            box-shadow: var(--shadow);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .header img {
+            height: 60px;
+            margin-bottom: 10px;
+        }
+
+        .header h2 {
+            color: var(--magenta);
+            font-size: 24px;
+            margin: 0;
+        }
+
+        .header p {
+            color: #666;
+            font-size: 14px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+        }
+
+        label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #333;
+            font-size: 14px;
+        }
+
+        select, input, textarea {
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 15px;
+            transition: border-color 0.3s, box-shadow 0.3s;
+            outline: none;
+            flex-grow: 1;
+            resize: vertical;
+            max-height: 25em;
+        }
+        textarea{
+            min-height:3em;
+        }
+
+        select:focus, input:focus {
+            border-color: var(--magenta);
+            box-shadow: 0 0 0 3px rgba(139, 0, 139, 0.1);
+        }
+
+        .radio-group {
+            display: flex;
+            gap: 20px;
+            margin-top: 10px;
+            background: #f9f9f9;
+            padding: 12px;
+            border-radius: 6px;
+        }
+
+        .radio-option {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+        }
+
+        .radio-option input {
+            width: auto;
+            cursor: pointer;
+        }
+
+        #sold-details {
+            display: none;
+            background: #fff5f2;
+            padding: 15px;
+            border-radius: 6px;
+            border-left: 4px solid var(--orangered);
+            margin-top: 10px;
+        }
+
+        .submit-btn {
+            width: 100%;
+            background: var(--magenta);
+            color: white;
+            border: none;
+            padding: 15px;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background 0.3s, transform 0.2s;
+            margin-top: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .submit-btn:hover {
+            background: var(--dark-magenta);
+            transform: translateY(-2px);
+        }
+
+        .submit-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+
+        #status-message {
+            margin-top: 20px;
+            padding: 12px;
+            border-radius: 6px;
+            text-align: center;
+            display: none;
+            font-size: 14px;
+        }
+
+        .success { background: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+        .error { background: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
+
+        @media (max-width: 480px) {
+            .report-container { padding: 25px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="report-container">
+        <div class="header">
+            <img src="https://i.ibb.co/CKRYPD4p/image.png" alt="TUNU Logo">
+            <h2>Field Report</h2>
+            <p>Log your sales and visits here</p>
+        </div>
+
+        <form id="reportForm">
+            <div class="form-group">
+                <label for="staffName"><i class="fas fa-user-tie"></i> Sales Representative</label>
+                <select id="staffName" name="staffName" required>
+                    <option value="" disabled selected>Select your name</option>
+                    <option value="Alice Wambui">Bridgit Kemunto</option>
+                    <option value="Charlene Kioko">Charlene Kioko</option>
+                    <option value="Luke">Luke</option>
+                    <option value="Stanley Keter">Stanley Keter</option>
+                    <option value="Esther Kendi">Esther Kendi</option>
+                    <option value="Francis Mutua">Francis Mutua</option>
+                    <option value="Grace Atieno">Grace Atieno</option>
+                    <option value="Hassan Juma">Hassan Juma</option>
+                    <option value="Irene Musyoka">Irene Musyoka</option>
+                    <option value="James Kamau">James Kamau</option>
+                    <option value="Kevin Kiprop">Kevin Kiprop</option>
+                    <option value="Lydia Chebet">Lydia Chebet</option>
+                    <option value="Moses Odhiambo">Moses Odhiambo</option>
+                    <option value="Nancy Wairimu">Nancy Wairimu</option>
+                    <option value="Peter Maina">Peter Maina</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="visitLocation"><i class="fas fa-school"></i> Name of Place Visited</label>
+                <input type="text" id="visitLocation" name="visitLocation" placeholder="e.g. St. Peters Primary" required>
+            </div>
+
+            <div class="form-group">
+                <label for="locationPhone"><i class="fas fa-phone"></i> Contact Phone Number</label>
+                <input type="tel" id="locationPhone" name="locationPhone" placeholder="07XX XXX XXX" required>
+            </div>
+
+            <div class="form-group">
+                <label><i class="fas fa-shopping-cart"></i> Was a sale made?</label>
+                <div class="radio-group">
+                    <label class="radio-option">
+                        <input type="radio" name="isSold" value="yes" onchange="toggleSaleDetails(true)" required> Yes
+                    </label>
+                    <label class="radio-option">
+                        <input type="radio" name="isSold" value="no" onchange="toggleSaleDetails(false)"> No
+                    </label>
+                </div>
+            </div>
+
+            <div id="sold-details">
+                <div class="form-group" style="margin-bottom:20px;">
+                    <label for="bookName">Book Name</label>
+                    <input type="text" id="bookName" name="bookName" placeholder="e.g. Mpira wa Sumbi">
+                </div>
+            </div>
+
+            <div id="comments">
+                <div class="form-group" style="margin-bottom:0;">
+                    <label for="bookName"> <i class="fas fa-message"></i> Enter Comments</label>
+                    <textarea id="saleComments" name="saleComments" placeholder="e.g. What can you say about the sale."></textarea>
+                </div>
+            </div>
+
+            <button type="submit" class="submit-btn" id="submitBtn">
+                <i class="fas fa-paper-plane"></i> SEND REPORT
+            </button>
+        </form>
+
+        <div id="status-message"></div>
+    </div>
+
+    <script>
+        function toggleSaleDetails(show) {
+            const details = document.getElementById('sold-details');
+            const bookInput = document.getElementById('bookName');
+            details.style.display = show ? 'block' : 'none';
+            bookInput.required = show;
+        }
+
+        document.getElementById('reportForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const submitBtn = document.getElementById('submitBtn');
+            const statusMsg = document.getElementById('status-message');
+            const formData = new FormData(this);
+            const data = Object.fromEntries(formData.entries());
+
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> SENDING...';
+            
+            statusMsg.style.display = 'none';
+            statusMsg.className = '';
+
+            try {
+                const response = await fetch('https://your-backend-endpoint.com/api/reports', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        ...data,
+                        timestamp: new Date().toISOString()
+                    })
+                });
+
+                if (response.ok) {
+                    statusMsg.innerText = "Report submitted successfully!";
+                    statusMsg.classList.add('success');
+                    statusMsg.style.display = 'block';
+                    this.reset();
+                    toggleSaleDetails(false);
+                } else {
+                    throw new Error('Failed to submit');
+                }
+            } catch (error) {
+                statusMsg.innerText = "Submission failed. Please try again.";
+                statusMsg.classList.add('error');
+                statusMsg.style.display = 'block';
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = '<i class="fas fa-paper-plane"></i> SEND REPORT';
+            }
+        });
+    </script>
+</body>
+</html>

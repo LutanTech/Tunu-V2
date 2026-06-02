@@ -1,0 +1,16 @@
+Flask
+Flask-SQLAlchemy
+Flask-Migrate
+Flask-Cors
+Flask-Mail
+Werkzeug
+SQLAlchemy
+alembic
+Mako
+greenlet
+typing-extensions
+blinker
+click
+itsdangerous
+Jinja2
+MarkupSafe
