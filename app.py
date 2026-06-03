@@ -503,6 +503,12 @@ def add_book(staff):
 # RUN
 # ========================
 
+from flask import send_from_directory
+
+@app.route('/api/book-cover/<path:filename>')
+def book_cover(filename):
+    return send_from_directory(UPLOAD_FOLDER, filename)
+
 @app.route('/admin/api/edit', methods=['POST'])
 def edit_book():
 
@@ -559,6 +565,8 @@ def upload_image():
         filepath = os.path.join(UPLOAD_FOLDER, filename)
 
         image.save(filepath)
+
+        
 
         return jsonify({
             'msg': 'Uploaded successfully',

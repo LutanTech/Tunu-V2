@@ -9,16 +9,188 @@
     <link rel="stylesheet" href="/assets/admin.css">
     <script src="/resources/base/utils.js"></script>
     <script src="/resources/base/base.js"></script>
-
 </head>
 <body>
     <style>
-        .main-content{
+        :root {
+            --magenta: #8B008B;
+            --dark-magenta: #4B004B;
+            --orangered: #FF4500;
+            --white: #FFFFFF;
+            --bg: #f8f9fa;
+            --text: #333;
+            --border: #dee2e6;
+            --success-color: #10b981;
+            --error-color: #ef4444;
+            --info-color: #3b82f6;
+            --warning-color: #f59e0b;
+        }
+
+        .main-content {
             background: white;
+        }
+
+        .notification-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 11000;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            width: 320px;
+            max-width: calc(100vw - 40px);
+            pointer-events: none;
+        }
+
+        .notification {
+            background: var(--white);
+            border-left: 4px solid var(--info-color);
+            padding: 16px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            transform: translateX(120%);
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.3s, margin 0.3s;
+            opacity: 0;
+            pointer-events: auto;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .notification.show {
+            transform: translateX(0);
+            opacity: 1;
+        }
+
+        .notification.hide {
+            transform: translateX(120%);
+            opacity: 0;
+        }
+
+        .notification-icon {
+            font-size: 1.2rem;
+            margin-top: 2px;
+        }
+
+        .notification-content {
+            flex-grow: 1;
+        }
+
+        .notification-title {
+            font-weight: bold;
+            font-size: 0.9rem;
+            margin-bottom: 4px;
+            color: #1f2937;
+        }
+
+        .notification-text {
+            font-size: 0.8rem;
+            color: #4b5563;
+            line-height: 1.4;
+        }
+
+        .notification-close {
+            background: none;
+            border: none;
+            color: #9ca3af;
+            cursor: pointer;
+            font-size: 0.9rem;
+            padding: 2px;
+            line-height: 1;
+            transition: color 0.2s;
+        }
+
+        .notification-close:hover {
+            color: #4b5563;
+        }
+
+        .notification.success {
+            border-left-color: var(--success-color);
+        }
+        .notification.success .notification-icon {
+            color: var(--success-color);
+        }
+
+        .notification.error {
+            border-left-color: var(--error-color);
+        }
+        .notification.error .notification-icon {
+            color: var(--error-color);
+        }
+
+        .notification.warning {
+            border-left-color: var(--warning-color);
+        }
+        .notification.warning .notification-icon {
+            color: var(--warning-color);
+        }
+
+        .notification.info {
+            border-left-color: var(--info-color);
+        }
+        .notification.info .notification-icon {
+            color: var(--info-color);
+        }
+
+        .notification-progress {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            height: 3px;
+            background: rgba(0,0,0,0.1);
+            width: 100%;
+            transform-origin: left;
+            animation: shrinkProgress linear forwards;
+        }
+
+        .notification.success .notification-progress {
+            background: var(--success-color);
+            opacity: 0.4;
+        }
+        .notification.error .notification-progress {
+            background: var(--error-color);
+            opacity: 0.4;
+        }
+        .notification.warning .notification-progress {
+            background: var(--warning-color);
+            opacity: 0.4;
+        }
+        .notification.info .notification-progress {
+            background: var(--info-color);
+            opacity: 0.4;
+        }
+
+        @keyframes shrinkProgress {
+            from { transform: scaleX(1); }
+            to { transform: scaleX(0); }
+        }
+
+        @media (max-width: 480px) {
+            .notification-container {
+                top: auto;
+                bottom: 20px;
+                right: 20px;
+                left: 20px;
+                width: auto;
+                max-width: none;
+            }
+            .notification {
+                transform: translateY(120%);
+            }
+            .notification.show {
+                transform: translateY(0);
+            }
+            .notification.hide {
+                transform: translateY(120%);
+            }
         }
     </style>
 
-    <!-- Modals -->
+    <div class="notification-container" id="notificationContainer"></div>
+
     <div class="modal" id="modalPost">
         <div class="modal-header">
             <h3 class="card-title">Create New Article</h3>
@@ -44,7 +216,6 @@
         <button class="btn-primary" style="width:100%" onclick="closeAll()">Publish Now</button>
     </div>
 
-    <!-- Staff Editing Modal Updated for DB Schema -->
     <div class="modal" id="modalStaff">
         <div class="modal-header">
             <h3 class="card-title">Staff Management</h3>
@@ -185,21 +356,6 @@
             </div>
             <button class="btn-primary" id="saveBook" style="width:100%" onclick="saveBook()">Save</button>
         </div>
-
-        <!-- <div class="form-group">
-            <label>Preview</label>
-            <img id="imagePreview" style="width:100%; max-height:200px; object-fit:cover; border-radius:10px; display:none;" />
-        </div>
-        
-        <div class="form-group">
-            <label>Upload Progress</label>
-            <div style="width:100%; background:#eee; border-radius:10px;">
-                <div id="uploadBar" style="width:0%; height:10px; background:#4caf50; border-radius:10px;"></div>
-            </div>
-            <small id="uploadText">0%</small>
-        </div> -->
-
-        
 
         <div class="dashboard-body">
             
@@ -376,26 +532,73 @@
 
         </div>
     </main>
-    <!-- <link rel="stylesheet" href="/assets/admin/loader.css"> -->
 
     <div class="loader active">
         <div class="loading-div">
-                <div class="book">
-                    <div class="book__pg-shadow"></div>
-                    <div class="book__pg -small">TUNU PUBLISHERS</div>
-                    <div class="book__pg book__pg--2"></div>
-                    <div class="book__pg book__pg--3"></div>
-                    <div class="book__pg book__pg--4"></div>
-                    <div class="book__pg book__pg--5 -small">TUNU PUBLISHERS</div>
-                  </div>
-                  
+            <div class="book">
+                <div class="book__pg-shadow"></div>
+                <div class="book__pg -small">TUNU PUBLISHERS</div>
+                <div class="book__pg book__pg--2"></div>
+                <div class="book__pg book__pg--3"></div>
+                <div class="book__pg book__pg--4"></div>
+                <div class="book__pg book__pg--5 -small">TUNU PUBLISHERS</div>
+            </div>
         </div>
         <h4 id="auth-feedback"> Authenticating... </h4>
-        
     </div>
-    <script>
 
-        
+    <script>
+        function notify(title, message, type = 'info', duration = 5000) {
+            const container = document.getElementById('notificationContainer');
+            const notification = document.createElement('div');
+            notification.className = `notification ${type}`;
+            
+            let iconClass = 'fa-info-circle';
+            if (type === 'success') iconClass = 'fa-check-circle';
+            if (type === 'error') iconClass = 'fa-exclamation-circle';
+            if (type === 'warning') iconClass = 'fa-exclamation-triangle';
+            
+            notification.innerHTML = `
+                <div class="notification-icon"><i class="fas ${iconClass}"></i></div>
+                <div class="notification-content">
+                    <div class="notification-title">${title}</div>
+                    <div class="notification-text">${message}</div>
+                </div>
+                <button class="notification-close" onclick="closeNotification(this)"><i class="fas fa-times"></i></button>
+                <div class="notification-progress" style="animation-duration: ${duration}ms;"></div>
+            `;
+            
+            container.appendChild(notification);
+            
+            requestAnimationFrame(() => {
+                notification.classList.add('show');
+            });
+            
+            const autoTimeout = setTimeout(() => {
+                dismissNotification(notification);
+            }, duration);
+            
+            notification.dataset.timeoutId = autoTimeout;
+        }
+
+        function closeNotification(button) {
+            const notification = button.closest('.notification');
+            if (notification) {
+                if (notification.dataset.timeoutId) {
+                    clearTimeout(parseInt(notification.dataset.timeoutId));
+                }
+                dismissNotification(notification);
+            }
+        }
+
+        function dismissNotification(notification) {
+            notification.classList.remove('show');
+            notification.classList.add('hide');
+            notification.addEventListener('transitionend', () => {
+                notification.remove();
+            });
+        }
+
         function authorizeAdmin() {
             const token = getCookie('token')
             const id = getCookie('sid')
@@ -413,419 +616,376 @@
                 if (!r.ok) throw data
                 return data
             })
-            .then(data => {
+            .then(() => {
                 fdb.textContent = "Authorized"
-                document.querySelector('.loader').classList.toggle('active')
-
-                if(data.error){
-                    fdb.style.color= 'red'
-                    fdb.textContent = data.error
-                }
+                document.querySelector('.loader').classList.remove('active')
+                notify('Authorization Successful', 'Access granted to Admin Executive Panel.', 'success', 4000);
             })
             .catch(err => {
- 
                 fdb.innerHTML = "Not authorized <br> " + get_text(err.message)
-                fdb.style.color= 'red'
-                console.log("Not authorized:" + get_text(err.message))
+                fdb.style.color = 'red'
+                notify('Access Denied', get_text(err.message), 'error', 6000);
+                setTimeout(() => {
+                    window.location.href = 'login.html';
+                }, 3000);
             })
         }
+        
         function get_text(text){
-            if( String(text).includes('Failed to')){
-                return 'Backend Connection Error. Contact ADMIN'
-            } else{
-                return text
-            }
+            return String(text).includes('Failed to')
+                ? 'Backend Connection Error. Contact ADMIN'
+                : text
         }
         
-        
-        document.addEventListener('DOMContentLoaded', ()=>{
+        document.addEventListener('DOMContentLoaded', () => {
             window.token = getCookie('token')
             window.id = getCookie('sid')
-
-            if(!window.token || !window.id){
-                return alert('Not Logged in. Please login to continue')
-            } else{
+        
+            if (!window.token || !window.id) {
+                notify('Authentication Required', 'Not Logged in. Redirecting to login page...', 'warning', 4000);
+                setTimeout(() => {
+                    window.location.href = 'login.html';
+                }, 2000);
+                return;
+            }
+        
             authorizeAdmin()
             fetchBooks()
-            switchPage('inventory', 'e')
-
-            }
-
-})
-        function fileToBase64(file) {
-            return new Promise((resolve, reject) => {
-                const reader = new FileReader();
+            switchPage('inventory', document.querySelector('.nav-item'))
+        })
         
-                reader.onload = () => resolve(reader.result);
-                reader.onerror = reject;
-        
-                reader.readAsDataURL(file);
-            });
-        }
-
-        function fetchBooks(){
-
-            fetch(`${API_URL}/admin/api/get_books`, {method: 'GET',
-            headers: {
-                'Authorization': `Bearer ${window.token}`,
-                'X-UID': window.id
-            }} )
-            .then(r=>r.json())
-            .then(data=>{
-                const books = data.books
-                const table = document.querySelector('.booksTable')
-                window.books = books
-
-                table.innerHTML = ''
-
-                books.forEach(book=>{
-                const tr = document.createElement('tr')
-                tr.innerHTML = `
-                 <td>${book.title}</td>
-                 <td>${book.authors}</td>
-                 <td>KES ${book.newPrice}</td>
-                 <td>
-                <div class="bookActions">
-                    <div id="delete" onclick="deleteInventory('${book.id}')">
-                        <i class="fas fa-trash"></i>
-                    </div>
-                    <div id="edit" onclick="editInventory('${(book.id)}')" style="color:blue"
-                        <i class="fas fa-pen"></i>
-                    </div>
-                </div>
-                    
-                 </td>
-                
-                `
-                table.appendChild(tr)
-                })
-            })
-        }
-
-        function editInventory(book_id) {
-
-            const book = window.books.find(b => b.id == book_id)
-        
-            openModal('modalBook')
-            console.log(book)
-
-            const modal = document.querySelector('#modalBook')
-
-            modal.querySelector('#bookTitle').value = book.title
-            modal.querySelector('#bookAuthor').value = book.authors
-
-            modal.querySelector('#bookNewPrice').value = book.newPrice
-            modal.querySelector('#bookOldPrice').value = book.oldPrice
-            modal.querySelector('#grade').value = book.grade
-            modal.querySelector('#bookDiscounted').value = book.oldPrice > book.newPrice
-
-            const btn = modal.querySelector('#saveBook')
-            if(!btn){
-                console.log('byeee')
-            }
-
-            btn.setAttribute('onclick', `updateBook('${book.id}')`)
-              
-        
-        }
-
-        function updateBook(id){
-            const modal = document.querySelector('#modalBook')
-
-            const t = modal.querySelector('#bookTitle').value 
-           const a =  modal.querySelector('#bookAuthor').value
-
-            const n = modal.querySelector('#bookNewPrice').value
-            const o = modal.querySelector('#bookOldPrice').value
-            const g = modal.querySelector('#grade').value
-            const d = modal.querySelector('#bookDiscounted').value
-
-
-            fetch(`${API_URL}/admin/api/edit`, {
-                method:'POST',
-                headers:{
-                    'Content-Type':'application/json',
-                    'Authorization': 'Bearer ' + window.token,
-                    'X-UID':window.id
-                },
-                body:JSON.stringify({'data':{'id':id, title:t, oldPrice:o, grade:g, discount:d, authors: a, newPrice: n}})
-            })
-        }
-        async function deleteInventory(id){
-
-            const confirmed = await confirmAction(
-                "Are you sure you want to delete this book?"
-            )
-        
-            if (!confirmed){
-                return
-            }
-        
-            const finished = await showCountDown(5)
-        
-            if (!finished){
-                return
-            }
-        
-            fetch(`${API_URL}/admin/api/delete_book`,{
-                method:'POST',
-                headers:{
-                    'Authorization':'Bearer ' + window.token,
-                    'X-UID': window.id,
-                    'Content-Type': 'application/json'
-                },
-                body:JSON.stringify({'id': id})
+        function fetchBooks() {
+            fetch(`${API_URL}/admin/api/get_books`, {
+                headers: {
+                    'Authorization': `Bearer ${window.token}`,
+                    'X-UID': window.id
+                }
             })
             .then(r => r.json())
             .then(data => {
-                console.log(data)
+                window.books = data.books || []
+        
+                const table = document.querySelector('.booksTable')
+                table.innerHTML = ''
+        
+                window.books.forEach(book => {
+                    const tr = document.createElement('tr')
+        
+                    tr.innerHTML = `
+                        <td>${book.title}</td>
+                        <td>${book.authors}</td>
+                        <td>KES ${book.newPrice}</td>
+                        <td>
+                            <div class="bookActions">
+                                <div onclick="deleteInventory('${book.id}')">
+                                    <i class="fas fa-trash"></i>
+                                </div>
+                                <div onclick="editInventory('${book.id}')" style="color:blue">
+                                    <i class="fas fa-pen"></i>
+                                </div>
+                            </div>
+                        </td>
+                    `
+                    table.appendChild(tr)
+                })
             })
-        
+            .catch(err => {
+                notify('Data Fetch Failed', 'Unable to synchronize book records.', 'error', 4000);
+            })
         }
-
-        function showCountDown(secs){
-
-            return new Promise((resolve) => {
         
+        function editInventory(book_id) {
+            const book = window.books.find(b => b.id == book_id)
+            if (!book) return
+        
+            openModal('modalBook')
+        
+            const modal = document.querySelector('#modalBook')
+        
+            modal.querySelector('#bookTitle').value = book.title
+            modal.querySelector('#bookAuthor').value = book.authors
+            modal.querySelector('#bookNewPrice').value = book.newPrice
+            modal.querySelector('#bookOldPrice').value = book.oldPrice
+            modal.querySelector('#grade').value = book.grade
+        
+            modal.querySelector('#bookImage').value = ''
+            modal.querySelector('#bookImage').setAttribute('data-src', book.url || '')
+        
+            modal.querySelector('#bookDiscounted').value =
+                String(book.oldPrice > book.newPrice)
+        
+            modal.querySelector('#saveBook').onclick = () => updateBook(book.id)
+        }
+        
+        async function updateBook(id) {
+            const modal = document.querySelector('#modalBook')
+            const file = document.getElementById('bookImage').files[0]
+            const existing = modal.querySelector('#bookImage').getAttribute('data-src')
+        
+            let imagePath = existing
+        
+            if (file) {
+                notify('Image Upload', 'Transferring graphic asset to server...', 'info', 3000);
+                const formData = new FormData()
+                formData.append("image", file)
+        
+                try {
+                    const res = await fetch(`${API_URL}/api/upload-image`, {
+                        method: "POST",
+                        body: formData,
+                        headers: {
+                            'Authorization': 'Bearer ' + window.token,
+                            'X-UID': window.id
+                        }
+                    })
+            
+                    const data = await res.json()
+                    imagePath = data.path
+                } catch(e) {
+                    notify('Upload Failed', 'Unable to process background cover image.', 'error', 4000);
+                    return;
+                }
+            }
+        
+            saveBook(id, imagePath)
+        }
+        
+        function saveBook(id, imagePath) {
+            const modal = document.querySelector('#modalBook')
+        
+            fetch(`${API_URL}/admin/api/edit`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + window.token,
+                    'X-UID': window.id
+                },
+                body: JSON.stringify({
+                    data: {
+                        id,
+                        title: modal.querySelector('#bookTitle').value,
+                        authors: modal.querySelector('#bookAuthor').value,
+                        newPrice: modal.querySelector('#bookNewPrice').value,
+                        oldPrice: modal.querySelector('#bookOldPrice').value,
+                        grade: modal.querySelector('#grade').value,
+                        discounted: modal.querySelector('#bookDiscounted').value === "true",
+                        image: imagePath
+                    }
+                })
+            })
+            .then(r => r.json())
+            .then(() => {
+                notify('Inventory Synchronized', 'The book configuration was updated successfully.', 'success', 4000);
+                fetchBooks()
+                closeAll()
+            })
+            .catch(err => {
+                notify('Update Aborted', 'Could not save the selected inventory modification.', 'error', 5000);
+            })
+        }
+        
+        async function deleteInventory(id) {
+            const confirmed = await confirmAction("Delete this book?")
+            if (!confirmed) return
+        
+            const finished = await showCountDown(5)
+            if (!finished) return
+        
+            fetch(`${API_URL}/admin/api/delete_book`, {
+                method: 'POST',
+                headers: {
+                    'Authorization': 'Bearer ' + window.token,
+                    'X-UID': window.id,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ id })
+            })
+            .then(r => {
+                if (!r.ok) throw new Error('Delete call rejected');
+                return r.json();
+            })
+            .then(() => {
+                notify('Item Purged', 'The record was safely deleted from book stock.', 'success', 4000);
+                fetchBooks();
+            })
+            .catch(err => {
+                notify('Deletions Failed', 'Encountered backend errors while cleaning entries.', 'error', 4000);
+            });
+        }
+        
+        function switchPage(pageId, element) {
+            document.querySelectorAll('.page-content').forEach(p => p.classList.remove('active'))
+            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'))
+        
+            const page = document.getElementById(pageId)
+            if (page) page.classList.add('active')
+        
+            if (element) element.classList.add('active')
+        
+            const titles = {
+                insights: 'Executive Overview',
+                orders: 'Order Management',
+                inventory: 'Book Inventory',
+                staff: 'Staff Accounts',
+                blog: 'Blog & Content',
+                readers: 'Reader Directory',
+                sales: 'Sales Performance'
+            }
+        
+            document.getElementById('pageTitle').innerText = titles[pageId] || 'Dashboard'
+        
+            if (window.innerWidth <= 768) closeAll()
+        }
+        
+        function toggleSidebar() {
+            document.getElementById('sidebar').classList.toggle('active')
+            document.getElementById('sidebarOverlay').classList.toggle('active')
+        }
+        
+        function openModal(id, clear) {
+            document.getElementById(id).classList.add('active')
+            document.getElementById('sidebarOverlay').classList.add('active')
+        
+            if (clear && id === 'modalBook') {
+                document.querySelectorAll('#modalBook input, #modalBook select')
+                .forEach(el => el.value = '')
+                document.querySelector('#saveBook').onclick = () => {
+                    addBook()
+                }
+            }
+        }
+        
+        function closeAll() {
+            document.getElementById('sidebarOverlay').className = 'overlay'
+            document.querySelectorAll('.modal').forEach(m => m.classList.remove('active'))
+            document.getElementById('sidebar').classList.remove('active')
+        }
+        
+        function confirmAction(text) {
+            return new Promise(resolve => {
                 const div = document.createElement('div')
         
                 div.innerHTML = `
                     <div class="confirm-box">
-                        <p class="action-text"></p>
-        
+                        <p class="action-text">${text}</p>
                         <div class="bookBtns">
+                            <button class="acceptBtn">Proceed</button>
                             <button class="declineBtn">Cancel</button>
                         </div>
                     </div>
                 `
         
                 div.classList.add('confirm-div')
-        
                 document.body.appendChild(div)
         
-                const text = div.querySelector('.action-text')
-                const decline = div.querySelector('.declineBtn')
-        
-                let currentSec = secs
-        
-                text.innerHTML = `<h3> Excecuting in ${currentSec} seconds</h3>`
-        
-                const interval = setInterval(() => {
-        
-                    currentSec--
-        
-                    text.innerHTML = `<h3> Excecuting in ${currentSec} seconds</h3>`
-        
-                    if(currentSec <= 0){
-        
-                        clearInterval(interval)
-        
-                        div.remove()
-        
-                        resolve(true)
-        
-                    }
-        
-                }, 1000)
-        
-                decline.addEventListener('click', () => {
-        
-                    clearInterval(interval)
-        
+                div.querySelector('.acceptBtn').onclick = () => {
                     div.remove()
+                    resolve(true)
+                }
         
+                div.querySelector('.declineBtn').onclick = () => {
+                    div.remove()
                     resolve(false)
-        
-                })
-        
+                }
             })
-        
         }
-      
-        function confirmAction(text) {
-            return new Promise((resolve) => {
         
+        function addBook() {
+            const modal = document.querySelector('#modalBook')
+            const file = document.getElementById('bookImage').files[0]
+            
+            if (!file) {
+                notify('Cover Missing', 'Please attach an image before adding.', 'warning', 4000);
+                return;
+            }
+
+            notify('Uploading Cover', 'Saving raw imagery to system files...', 'info', 3000);
+            
+            const formData = new FormData()
+            formData.append('image', file)
+
+            fetch(`${API_URL}/api/upload-image`, {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'Authorization': 'Bearer ' + window.token,
+                    'X-UID': window.id
+                }
+            })
+            .then(r => r.json())
+            .then(data => {
+                const image = data.path
+                fetch(`${API_URL}/api/books/add`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer ' + window.token,
+                        'X-UID': window.id
+                    },
+                    body: JSON.stringify({
+                        title: modal.querySelector('#bookTitle').value,
+                        authors: modal.querySelector('#bookAuthor').value,
+                        newPrice: modal.querySelector('#bookNewPrice').value,
+                        oldPrice: modal.querySelector('#bookOldPrice').value,
+                        grade: modal.querySelector('#grade').value,
+                        discounted: modal.querySelector('#bookDiscounted').value === 'true',
+                        image: image
+                    })
+                })
+                .then(r => r.json())
+                .then(data => {
+                    notify('Inventory Updated', 'New book asset created successfully.', 'success', 4000);
+                    fetchBooks();
+                    closeAll();
+                })
+                .catch(err => {
+                    notify('Registry Rejected', 'Unable to log the physical book asset.', 'error', 4000);
+                })
+            })
+            .catch(err => {
+                notify('Upload Failure', 'Could not sync the target book cover metadata.', 'error', 4000);
+            })
+        }
+
+        function showCountDown(secs) {
+            return new Promise(resolve => {
                 const div = document.createElement('div')
         
                 div.innerHTML = `
                     <div class="confirm-box">
                         <p class="action-text"></p>
-
                         <div class="bookBtns">
-    
-                        <button class="acceptBtn">Proceed</button>
-                        <button class="declineBtn">Cancel</button>
+                            <button class="declineBtn">Cancel</button>
                         </div>
                     </div>
                 `
-        
-                div.querySelector('.action-text').textContent = text
-        
                 div.classList.add('confirm-div')
-        
                 document.body.appendChild(div)
         
-                const accept = div.querySelector('.acceptBtn')
+                const text = div.querySelector('.action-text')
                 const decline = div.querySelector('.declineBtn')
         
-                accept.addEventListener('click', () => {
-                    div.remove()
-                    resolve(true)
-                })
+                let current = secs
+                text.innerHTML = `<h3>Executing in ${current}s</h3>`
         
-                decline.addEventListener('click', () => {
+                const interval = setInterval(() => {
+                    current--
+                    text.innerHTML = `<h3>Executing in ${current}s</h3>`
+        
+                    if (current <= 0) {
+                        clearInterval(interval)
+                        div.remove()
+                        resolve(true)
+                    }
+                }, 1000)
+        
+                decline.onclick = () => {
+                    clearInterval(interval)
                     div.remove()
                     resolve(false)
-                })
-        
-            })
-        }
-        
-        
-        async function saveBook() {
-            const file = document.getElementById("bookImage").files[0];
-        
-            let base64Image = "";
-        
-            if (file) {
-                base64Image = await fileToBase64(file);
-            }
-        
-            const data = {
-                title: document.getElementById("bookTitle").value,
-                authors: document.getElementById("bookAuthor").value,
-                oldPrice: document.getElementById("bookOldPrice").value,
-                newPrice: document.getElementById("bookNewPrice").value,
-                discounted: document.getElementById("bookDiscounted").value === "true",
-                grade: document.getElementById('grade').value,
-                image: base64Image
-            };
-        
-            const xhr = new XMLHttpRequest();
-            xhr.open("POST", API_URL + "/api/books/add", true);
-            xhr.setRequestHeader("Content-Type", "application/json");
-            xhr.setRequestHeader("X-UID", window.id);
-            xhr.setRequestHeader('Authorization', "Bearer " + window.token);
-        
-            xhr.onload = function () {
-                if (xhr.status === 200) {
-                    alert("Book saved 😎");
-                    closeAll();
-                } else {
-                    alert("Failed ❌");
                 }
-            };
-        
-            xhr.send(JSON.stringify(data));
-        }
-
-        function toggleSidebar() {
-            document.getElementById('sidebar').classList.toggle('active');
-            document.getElementById('sidebarOverlay').classList.toggle('active');
-
-            console.log(sdo.classList + 'opened')
-
-        }
-
-        function openModal(id, clear) {
-            document.getElementById(id).classList.add('active');
-            document.getElementById('sidebarOverlay').classList.add('active');
-            const bookMode = document.querySelector('#modalBook')
-            const inputs = bookMode.querySelectorAll('input')
-            const selects = bookMode.querySelectorAll('select')
-            console.log(inputs.length, selects.length)
-
-            if(clear){
-                inputs.forEach(inp=>{
-                    inp.value= ''
-                })
-                selects.forEach(sel=>{
-                    sel.value= ''
-                })
-
-        }
-
-        }
-
-        function closeAll() {
-            const sdo = document.getElementById('sidebarOverlay')
-            sdo.className= 'overlay';
-
-            document.querySelectorAll('.modal').forEach(m => m.classList.remove('active'));
-            document.getElementById('sidebar').classList.remove('active');
-        }
-
-        function saveStaff() {
-            const data = {
-                name: document.getElementById('staffName').value,
-                email: document.getElementById('staffEmail').value,
-                phone: document.getElementById('staffPhone').value,
-                location: document.getElementById('staffLocation').value,
-                is_admin: document.getElementById('staffIsAdmin').checked
-            };
-            fetch(`${API_URL}/admin/api/add-staff`, {
-                method:'POST',
-                headers:{
-                    'Authorization': 'Bearer ' + window.token,
-                    'Content-Type':'application/json',
-                    'X-UID':window.id
-                },
-                body:JSON.stringify(data)
             })
-            closeAll();
         }
-
-        function switchPage(pageId, element) {
-            document.querySelectorAll('.page-content').forEach(p => p.classList.remove('active'));
-            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-            
-            document.getElementById(pageId).classList.add('active');
-            element.classList.add('active');
-            
-            const titles = {
-                'insights': 'Executive Overview',
-                'orders': 'Order Management',
-                'inventory': 'Book Inventory',
-                'staff': 'Staff Accounts',
-                'blog': 'Blog & Content',
-                'readers': 'Reader Directory',
-                'sales': 'Sales Performance'
-            };
-            document.getElementById('pageTitle').innerText = titles[pageId];
-            
-            if (window.innerWidth <= 768) closeAll();
-        }
-
-        const revCtx = document.getElementById('revenueChart').getContext('2d');
-        new Chart(revCtx, {
-            type: 'line',
-            data: {
-                labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
-                datasets: [{
-                    label: 'Revenue',
-                    data: [12000, 19000, 15000, 25000, 22000, 30000, 28000],
-                    borderColor: '#8B008B',
-                    backgroundColor: 'rgba(139, 0, 139, 0.1)',
-                    tension: 0.4,
-                    fill: true
-                }]
-            },
-            options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } }
-        });
-
-        const catCtx = document.getElementById('categoryChart').getContext('2d');
-        new Chart(catCtx, {
-            type: 'doughnut',
-            data: {
-                labels: ['Fiction', 'Academic', 'Poetry', 'Children'],
-                datasets: [{
-                    data: [45, 25, 15, 15],
-                    backgroundColor: ['#8B008B', '#FF4500', '#4B004B', '#FFD700'],
-                    borderWidth: 0
-                }]
-            },
-            options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom' } } }
-        });
     </script>
 </body>
 </html>
