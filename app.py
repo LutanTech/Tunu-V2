@@ -522,6 +522,7 @@ def edit_book():
         book.newPrice = data.get("newPrice")
         book.discounted = data.get("discounted")
         book.grade = data.get("grade")
+        book.image = data.get("image")
         book.authors = data.get("authors")
 
         db.session.commit()
@@ -531,9 +532,41 @@ def edit_book():
     except Exception as e:
         db.session.rollback()
         return jsonify({'error': f'Failed to edit {str(e)}'}), 500
-    
-    return
 
+import os
+from werkzeug.utils import secure_filename
+
+UPLOAD_FOLDER = os.path.join("resources", "books", "covers")
+
+@app.route('/api/upload-image', methods=['POST'])
+def upload_image():
+    try:
+        if 'image' not in request.files:
+            return jsonify({'error': 'No image provided'}), 400
+
+        image = request.files['image']
+
+        if image.filename == '':
+            return jsonify({'error': 'No file selected'}), 400
+
+        os.makedirs(UPLOAD_FOLDER, exist_ok=True)
+
+        filename = secure_filename(image.filename)
+
+        name, ext = os.path.splitext(filename)
+        filename = f"{generate_id('IMG', 8)}{ext}"
+
+        filepath = os.path.join(UPLOAD_FOLDER, filename)
+
+        image.save(filepath)
+
+        return jsonify({
+            'msg': 'Uploaded successfully',
+            'path': filepath.replace("\\", "/")
+        }), 200
+
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
 
 @app.route('/admin/api/delete_book', methods=['POST'])
 @protected
@@ -564,14 +597,14 @@ def authorize_admin(staff):
         return jsonify({'msg':f'Welcome back {staff.name}'}), 200
 
 
-@app.route('/admin/api/add-staff', methods=['POST'])
-@protected
-def add_staff():
-    data = request.get_json()
+# @app.route('/admin/api/add-staff', methods=['POST'])
+# @protected
+# def add_staff():
+#     data = request.get_json()
     
-    if not data:
-        return jsonify({'error':'Incomplete request. Please try again'}), 404
-    new_staff = Staff(name=data.get(""))
+#     if not data:
+#         return jsonify({'error':'Incomplete request. Please try again'}), 404
+#     new_staff = Staff(name=data.get(""))
     
 if __name__ == '__main__':
     with app.app_context():

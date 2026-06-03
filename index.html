@@ -3,8 +3,97 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TUNU Publishers | Empowering African Voices</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <title>TUNU Publishers | Elimu ni Tunu</title>
+	<meta name="title" content="TUNU Publishers | Elimu ni Tunu">
+
+	<meta name="description"
+		content="TUNU Publishers is Kenya's trusted publisher for CBC books, story books, novels, poetry, revision materials, educational resources and children's learning content.">
+
+	<meta name="keywords"
+		content="TUNU Publishers, CBC books Kenya, novels, educational books, Grade books, revision books, story books, poetry books, publishers in Kenya, children's books, elimu ni tunu">
+    
+    <link rel="stylesheet" href="/resources/base/base.css">
+
+	<meta name="author" content="TUNU Publishers">
+
+	<meta name="robots" content="index, follow">
+
+	<meta name="googlebot" content="index, follow">
+
+	<meta name="theme-color" content="#c2185b">
+
+	<meta name="language" content="English">
+
+	<meta name="rating" content="general">
+
+	<meta name="revisit-after" content="2 days">
+
+	<link rel="canonical" href="https://www.tunupublishers.com">
+
+	<!-- ICONS -->
+	<link rel="icon" type="image/png" href="/assets/images/logo.png">
+
+	<link rel="apple-touch-icon" href="/assets/images/logo.png">
+
+	<!-- OPEN GRAPH -->
+	<meta property="og:type" content="website">
+
+	<meta property="og:site_name" content="TUNU Publishers">
+
+	<meta property="og:title" content="TUNU Publishers | Elimu ni Tunu">
+
+	<meta property="og:description" content="Discover CBC books, novels, poetry, educational materials and children's learning resources from TUNU Publishers.">
+
+	<meta property="og:url" content="https://www.tunupublishers.com">
+
+    <meta name="google-site-verification" content="m92xg8EhgbFUx9VwfR6tNqK4UHym8uwtAHfDtcRYjwA" />
+
+	<meta property="og:image" content="https://www.tunupublishers.com/assets/images/logo.png">
+
+	<meta property="og:locale" content="en_KE">
+
+	<!-- TWITTER -->
+	<meta name="twitter:card" content="summary_large_image">
+
+	<meta name="twitter:title" content="TUNU Publishers | Elimu ni Tunu">
+
+	<meta name="twitter:description" content="Kenya's trusted source for CBC books, educational materials, novels, poetry and children's learning resources.">
+
+	<meta name="twitter:image" content="https://www.tunupublishers.com/assets/images/logo.png">
+
+	<!-- STRUCTURED DATA -->
+	<script type="application/ld+json">
+		{
+			"@context": "https://schema.org",
+			"@type": "BookStore",
+			"name": "TUNU Publishers",
+			"url": "https://www.tunupublishers.com",
+			"logo": "https://www.tunupublishers.com/assets/images/logo.png",
+			"image": "https://www.tunupublishers.com/assets/images/logo.png",
+			"description": "TUNU Publishers provides CBC books, educational resources, novels, poetry and children's learning materials in Kenya.",
+			"brand":
+			{
+				"@type": "Brand",
+				"name": "TUNU Publishers"
+			},
+			"sameAs": [
+            "https://www.tunupublishers.com"
+        ]
+		}
+
+	</script>
+
+	<!-- PRECONNECT -->
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+	<!-- FONTS -->
+	<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+	<!-- FONT AWESOME -->
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
     <style>
         :root {
             --magenta: #8B008B;
@@ -624,7 +713,7 @@
 
     <section class="hero-carousel">
         <div class="carousel-slide active">
-            <img src="https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=1600" class="carousel-img" alt="Education">
+            <img src="/resources/images/hero_1.jpeg" class="carousel-img" alt="Education">
             <div class="container">
                 <div class="carousel-content">
                     <h2>Empowering the Next Generation</h2>
@@ -636,7 +725,7 @@
             </div>
         </div>
         <div class="carousel-slide">
-            <img src="https://images.unsplash.com/photo-1588072432836-e10032774350?w=1600" class="carousel-img" alt="Kids Learning">
+            <img src="/resources/images/hero_2.jpg" class="carousel-img" alt="Kids Learning">
             <div class="container">
                 <div class="carousel-content">
                     <h2>Creative Arts & Readers</h2>
@@ -647,9 +736,22 @@
                 </div>
             </div>
         </div>
+        <div class="carousel-slide">
+            <img src="/resources/images/hero_3.jpg" class="carousel-img" alt="Kids Learning">
+            <div class="container">
+                <div class="carousel-content">
+                    <h2>Junior School</h2>
+                    <p>Curriculum-aligned learning materials for grades 4-9, bridging the gap between primary and secondary education.</p>
+                    <button class="btn btn-secondary" onclick="openCart()">
+                        <i class="fas fa-school"></i> VIEW JUNIOR
+                    </button>
+                </div>
+            </div>
+        </div>
         <div class="carousel-nav" id="carousel-dots">
             <div class="dot active" onclick="setSlide(0)"></div>
             <div class="dot" onclick="setSlide(1)"></div>
+            <div class="dot" onclick="setSlide(2)"></div>
         </div>
     </section>
 
@@ -695,30 +797,68 @@
         </div>
     </section>
 
-    <footer style="background: var(--dark-magenta); color: white; padding: 80px 0 30px;">
+    <footer>
+
         <div class="container">
-            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 40px; margin-bottom: 50px;">
+            <div class="footer-grid">
                 <div>
                     <h3 style="margin-bottom:20px; display:flex; align-items:center; gap:10px;">
-                        <img src="https://i.ibb.co/CKRYPD4p/image.png" height="30" alt=""> TUNU
+                        <img src="/assets/images/logo.png" height="35" style=" padding:2px; border-radius:3px;">
+                        TUNU PUBLISHERS
                     </h3>
-                    <p style="color:#ccc; font-size:14px;">Bringing the best of African education and creativity to every learner across the continent.</p>
+                    <p style="color:#ccc; font-size:14px; line-height:1.8;">Innovative educational solutions crafted for  learners. We bridge the gap between curriculum and understanding with relevant content.</p>
+                    <div class="social-links">
+                        <a href="https://www.facebook.com/p/TUNU-Publishers-61565538623974/" target="_blank"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
                 </div>
-                <div>
-                    <h4 style="margin-bottom:20px; border-left:4px solid var(--orangered); padding-left:15px;">CONTACT</h4>
-                    <p style="color:#ccc; font-size:14px; margin-bottom:10px;"><i class="fas fa-phone-alt"></i> 0722 68 21 29</p>
-                    <p style="color:#ccc; font-size:14px;"><i class="fas fa-envelope"></i> info@tunupublishers.co.ke</p>
+    
+                <div class="footer-col">
+                    <h4>Quick Links</h4> 
+                    <ul class="footer-links">
+                        <li><a href="/">Home</a></li>
+                        <li><a href="/about">About TUNU</a></li>
+                        <li><a href="/books?cat=primary">Primary Books</a></li>
+                        <li><a href="/books?cat=junior">Junior Secondary</a></li>
+                        <li><a href="/books?cat=junior">Revision Guides</a></li>
+                    </ul>
                 </div>
-                <div>
-                    <h4 style="margin-bottom:20px; border-left:4px solid var(--orangered); padding-left:15px;">LOCATION</h4>
-                    <p style="color:#ccc; font-size:14px;"><i class="fas fa-map-marker-alt"></i> Harambee Sacco Plaza, Nairobi</p>
+    
+                <div class="footer-col">
+                    <h4>Support</h4>
+                    <ul class="footer-links">
+                        <li><a href="/orders">Order Tracking</a></li>
+                        <li><a href="/delivery_policy">Delivery Policy</a></li>
+                        <li><a href="/privacy_policy">Privacy Policy</a></li>
+                        <li><a href="/terms_of_service">Terms of Service</a></li>
+                        <li><a href="/contact_us">Contact Us</a></li>
+                    </ul>
+                </div>
+    
+                <div class="footer-col">
+                    <h4>Contact Info</h4>
+                    <ul class="footer-contact">
+                        <li><i class="fas fa-map-marker-alt"></i> Harambee Sacco Shopping Centre, Nairobi, Kenya</li>
+                        <li><i class="fas fa-phone-alt"></i> +254 722 68 21 29</li>
+                        <li><i class="fas fa-envelope"></i> info@tunupublishers.com</li>
+                        <li><i class="fas fa-clock"></i> Mon-Sat: 8:00am - 6:00pm</li>
+                    </ul>
                 </div>
             </div>
-            <div style="border-top: 1px solid rgba(255,255,255,0.1); padding-top: 30px; text-align: center; color: #888;">
-                <p>&copy; 2026 TUNU Publishers. All Rights Reserved.</p>
+    
+            <div class="footer-bottom">
+                <p>&copy; 2026 TUNU Publishers Limited. All Rights Reserved.</p>
+                <div style="margin-top:15px; display:flex; justify-content:center; gap:10px; opacity:0.6;">
+                    <img src="https://img.icons8.com/color/48/000000/visa.png" height="25" />
+                    <img src="https://img.icons8.com/color/48/000000/mastercard.png" height="25" />
+                    <img src="https://img.icons8.com/color/48/000000/mpesa.png" height="25" />
+                </div>
             </div>
         </div>
     </footer>
+    
 
     <a href="https://wa.me/254722682129" target="_blank" class="whatsapp-float"><i class="fab fa-whatsapp"></i></a>
 
@@ -751,6 +891,7 @@
             .then(data=>{
                 console.log(data)
                 booksData = data
+                renderBooks('rating')
             })
         }
         fetchBooks()

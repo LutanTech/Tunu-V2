@@ -4,7 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TUNU Publishers | Login</title>
-    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"> -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="/resources/base/base.css">
     <script src="/resources/base/utils.js"></script>
     <style>
         :root {
@@ -15,6 +16,11 @@
             --bg: #f8f9fa;
             --text: #333;
             --border: #dee2e6;
+            
+            --success-color: #10b981;
+            --error-color: #ef4444;
+            --info-color: #3b82f6;
+            --warning-color: #f59e0b;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -29,6 +35,8 @@
             box-shadow: 0 10px 30px rgba(0,0,0,0.08);
             border: 1px solid var(--border);
             animation: fadeIn 0.5s ease-out;
+            position: relative;
+            z-index: 10;
         }
 
         @keyframes fadeIn {
@@ -175,13 +183,172 @@
         #message.error { background: #fee2e2; color: #b91c1c; display: block; }
         #message.success { background: #dcfce7; color: #15803d; display: block; }
 
+        .notification-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 10000;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            width: 320px;
+            max-width: calc(100vw - 40px);
+            pointer-events: none;
+        }
+
+        .notification {
+            background: var(--white);
+            border-left: 4px solid var(--info-color);
+            padding: 16px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            transform: translateX(120%);
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.3s, margin 0.3s;
+            opacity: 0;
+            pointer-events: auto;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .notification.show {
+            transform: translateX(0);
+            opacity: 1;
+        }
+
+        .notification.hide {
+            transform: translateX(120%);
+            opacity: 0;
+        }
+
+        .notification-icon {
+            font-size: 1.2rem;
+            margin-top: 2px;
+        }
+
+        .notification-content {
+            flex-grow: 1;
+        }
+
+        .notification-title {
+            font-weight: bold;
+            font-size: 0.9rem;
+            margin-bottom: 4px;
+            color: #1f2937;
+        }
+
+        .notification-text {
+            font-size: 0.8rem;
+            color: #4b5563;
+            line-height: 1.4;
+        }
+
+        .notification-close {
+            background: none;
+            border: none;
+            color: #9ca3af;
+            cursor: pointer;
+            font-size: 0.9rem;
+            padding: 2px;
+            line-height: 1;
+            transition: color 0.2s;
+        }
+
+        .notification-close:hover {
+            color: #4b5563;
+        }
+
+        .notification.success {
+            border-left-color: var(--success-color);
+        }
+        .notification.success .notification-icon {
+            color: var(--success-color);
+        }
+
+        .notification.error {
+            border-left-color: var(--error-color);
+        }
+        .notification.error .notification-icon {
+            color: var(--error-color);
+        }
+
+        .notification.warning {
+            border-left-color: var(--warning-color);
+        }
+        .notification.warning .notification-icon {
+            color: var(--warning-color);
+        }
+
+        .notification.info {
+            border-left-color: var(--info-color);
+        }
+        .notification.info .notification-icon {
+            color: var(--info-color);
+        }
+
+        .notification-progress {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            height: 3px;
+            background: rgba(0,0,0,0.1);
+            width: 100%;
+            transform-origin: left;
+            animation: shrinkProgress linear forwards;
+        }
+
+        .notification.success .notification-progress {
+            background: var(--success-color);
+            opacity: 0.4;
+        }
+        .notification.error .notification-progress {
+            background: var(--error-color);
+            opacity: 0.4;
+        }
+        .notification.warning .notification-progress {
+            background: var(--warning-color);
+            opacity: 0.4;
+        }
+        .notification.info .notification-progress {
+            background: var(--info-color);
+            opacity: 0.4;
+        }
+
+        @keyframes shrinkProgress {
+            from { transform: scaleX(1); }
+            to { transform: scaleX(0); }
+        }
+
+        @media (max-width: 480px) {
+            .notification-container {
+                top: auto;
+                bottom: 20px;
+                right: 20px;
+                left: 20px;
+                width: auto;
+                max-width: none;
+            }
+            .notification {
+                transform: translateY(120%);
+            }
+            .notification.show {
+                transform: translateY(0);
+            }
+            .notification.hide {
+                transform: translateY(120%);
+            }
+        }
     </style>
 </head>
 <body>
 
+    <div class="notification-container" id="notificationContainer"></div>
+
     <div class="login-card">
         <div class="login-header">
-            <img src="/assets/images/logo.png" alt="TUNU Logo" class="logo" onclick="location.href='index.html'">
+            <img src="/assets/images/logo.png" alt="TUNU Logo" class="logo" onclick="location.href='index.html'" onerror="this.src='https://placehold.co/150x50?text=TUNU+Publishers'">
             <h2>Welcome Back</h2>
             <p style="font-size: 0.85rem; color: #666; margin-top: 5px;">Login to your publisher account</p>
         </div>
@@ -201,7 +368,7 @@
                 <label style="display: flex; align-items: center; gap: 5px; cursor: pointer;">
                     <input type="checkbox" id="remember"> Remember me
                 </label>
-                <a href="#" class="forgot-link">Forgot Password?</a>
+                <a href="#" class="forgot-link" onclick="triggerResetFlow(event)">Forgot Password?</a>
             </div>
 
             <button type="submit" class="login-btn">Login</button>
@@ -209,18 +376,105 @@
             <div id="message"></div>
         </form>
 
-
         <div class="register-text">
-            Don't have an account? <a href="#">Contact Admin</a>
+            Don't have an account? <a href="#" onclick="triggerAdminContact(event)">Contact Admin</a>
         </div>
     </div>
 
     <script src="/resources/base/base.js"></script>
     <script>
+        const API_URL = window.API_URL || '';
 
-        setTimeout(()=>{
-           console.log(getCookie('token'))
-        }, 3000)
+        function getCookie(name) {
+            const value = `; ${document.cookie}`;
+            const parts = value.split(`; ${name}=`);
+            if (parts.length === 2) return parts.pop().split(';').shift();
+            return '';
+        }
+
+        function setCookie(name, value, days = 7) {
+            let expires = "";
+            if (days) {
+                const date = new Date();
+                date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+                expires = "; expires=" + date.toUTCString();
+            }
+            document.cookie = name + "=" + (value || "")  + expires + "; path=/; SameSite=Lax";
+        }
+
+        setTimeout(() => {
+            try {
+                const token = getCookie('token');
+                if (token) {
+                    console.log('Existing Session Token Detected:', token);
+                    notify('Welcome Back', 'Active session found. Automatically signing you in...', 'info', 4000);
+                }
+            } catch(e) {}
+        }, 1500);
+
+        function notify(title, message, type = 'info', duration = 5000) {
+            const container = document.getElementById('notificationContainer');
+            
+            const notification = document.createElement('div');
+            notification.className = `notification ${type}`;
+            
+            let iconClass = 'fa-info-circle';
+            if (type === 'success') iconClass = 'fa-check-circle';
+            if (type === 'error') iconClass = 'fa-exclamation-circle';
+            if (type === 'warning') iconClass = 'fa-exclamation-triangle';
+            
+            notification.innerHTML = `
+                <div class="notification-icon"><i class="fas ${iconClass}"></i></div>
+                <div class="notification-content">
+                    <div class="notification-title">${title}</div>
+                    <div class="notification-text">${message}</div>
+                </div>
+                <button class="notification-close" onclick="closeNotification(this)"><i class="fas fa-times"></i></button>
+                <div class="notification-progress" style="animation-duration: ${duration}ms;"></div>
+            `;
+            
+            container.appendChild(notification);
+            
+            requestAnimationFrame(() => {
+                notification.classList.add('show');
+            });
+            
+            const autoTimeout = setTimeout(() => {
+                dismissNotification(notification);
+            }, duration);
+            
+            notification.dataset.timeoutId = autoTimeout;
+        }
+
+        function closeNotification(button) {
+            const notification = button.closest('.notification');
+            if (notification) {
+                if (notification.dataset.timeoutId) {
+                    clearTimeout(parseInt(notification.dataset.timeoutId));
+                }
+                dismissNotification(notification);
+            }
+        }
+
+        function dismissNotification(notification) {
+            notification.classList.remove('show');
+            notification.classList.add('hide');
+            
+            notification.addEventListener('transitionend', () => {
+                notification.remove();
+            });
+        }
+
+        function triggerResetFlow(e) {
+            e.preventDefault();
+            notify('Password Reset Request', 'Please contact the IT Administrator to reset your publisher account credentials.', 'warning', 6000);
+        }
+
+        function triggerAdminContact(e) {
+            e.preventDefault();
+            notify('Account Registration', 'To request system credentials, please reach out directly to operations@tunupublishers.com.', 'info', 6000);
+        }
+
         function handleLogin(e) {
             e.preventDefault();
             const id = document.getElementById('id').value;
@@ -229,33 +483,53 @@
             const remember = document.getElementById('remember');
 
             if (id && password) {
+                notify('Authentication Status', 'Verifying staff credentials...', 'info', 2000);
+                
                 fetch(`${API_URL}/api/login/auth/0`, {
-                    method:'POST',
-                    headers:{
-                        'Content-Type':'application/json'
-                    }, body:JSON.stringify({'id':id, 'password':password, 'rem': remember.checked ? 'True' : 'False'})
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }, 
+                    body: JSON.stringify({
+                        'id': id, 
+                        'password': password, 
+                        'rem': remember.checked ? 'True' : 'False'
+                    })
                 })
-                .then(r=>r.json())
-                .then(data=>{
-                    if(data.staff){
+                .then(r => {
+                    if (!r.ok) {
+                        throw new Error('Authentication rejected by server.');
+                    }
+                    return r.json();
+                })
+                .then(data => {
+                    if (data.staff) {
                         message.className = 'success';
                         message.innerText = 'Login successful! Redirecting...';
-                        setCookie('token', data.staff.token)
-                        setCookie('sid', data.staff.id)
-                        setCookie('is_admin', data.staff.is_admin)
                         
+                        setCookie('token', data.staff.token);
+                        setCookie('sid', data.staff.id);
+                        setCookie('is_admin', data.staff.is_admin);
+                        
+                        notify('Access Granted', `Welcome back, ${data.staff.name || 'Publisher Staff'}. Redirecting you to your portal.`, 'success', 4000);
+                        
+                        setTimeout(() => {
+                            window.location.href = data.staff.is_admin ? 'admin_dashboard.html' : '/staff/dashboard';
+                        }, 1500);
+                    } else {
+                        throw new Error(data.message || 'Invalid Staff ID or password combo.');
                     }
                 })
-                .catch(err=>{
+                .catch(err => {
                     message.className = 'error';
-                        message.innerText = err.message;
-                        
-                        
-                })
+                    message.innerText = err.message;
+                    notify('Authentication Failed', err.message, 'error', 6000);
+                });
                 
             } else {
                 message.className = 'error';
                 message.innerText = 'Please check your credentials.';
+                notify('Fields Required', 'Please complete both the Staff ID and password parameters.', 'warning', 4000);
             }
         }
     </script>
