@@ -1535,7 +1535,7 @@
             ids.push(item)
         })
 
-        fetch('http://127.0.0.1:5000/api/create_order', {
+        fetch(API_URL + '/api/create_order', {
             method:'POST',
             headers:{
                 'Content-Type':'application/json'
