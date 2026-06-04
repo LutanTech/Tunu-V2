@@ -5,6 +5,7 @@ import json
 import time
 import secrets
 import os
+import re
 
 SECRET_KEY = os.getenv("SECRET_KEY", "dev-secret-change-me")
 
@@ -81,3 +82,21 @@ def verify_token(staff_id: str, tkv: str, token: str) -> bool:
 
     except Exception:
         return False
+    
+
+def format_phone(number: str) -> str:
+    if not number:
+        return None
+
+    num = re.sub(r"[^\d]", "", str(number))
+
+    if num.startswith("0") and len(num) == 10:
+        return "254" + num[1:]
+
+    if (num.startswith("7") or num.startswith("1")) and len(num) == 9:
+        return "254" + num
+
+    if num.startswith("254") and len(num) >= 12:
+        return num
+
+    return num

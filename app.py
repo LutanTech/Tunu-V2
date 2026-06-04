@@ -9,6 +9,7 @@ from functools import wraps
 
 from emailer import send_welcome_message, send_reminder, send_weekend_wish
 from utils import generate_token, verify_token
+import os
 
 
 from flask_mail import Mail
@@ -28,6 +29,15 @@ mail = Mail(app)
 
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///tunu.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
+
+CONSUMER_KEY = os.getenv("MPESA_CONSUMER_KEY")
+CONSUMER_SECRET = os.getenv("MPESA_CONSUMER_SECRET")
+SHORTCODE = os.getenv("MPESA_SHORTCODE")
+PASSKEY = os.getenv("MPESA_PASSKEY")
+MPESA_ENV = os.getenv("MPESA_ENV", "sandbox")
+
+
 
 db = SQLAlchemy(app)
 CORS(app)
