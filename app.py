@@ -6,11 +6,12 @@ from flask_cors import CORS
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_migrate import Migrate
 from functools import wraps
+from flask_mail import Message
 
 from emailer import send_welcome_message, send_reminder, send_weekend_wish
 from utils import generate_token, verify_token
 import os
-
+import json
 
 from flask_mail import Mail
 
@@ -194,7 +195,32 @@ class Log(db.Model):
             'time': self.timestamp
         }
 
+class Order(db.Model):
+    id = db.Column(db.String(50), default=lambda: generate_id('ORD',length=10), primary_key=True)
+    temp_id = db.Column(db.String(512))
+    data = db.Column(db.JSON)
+    name = db.Column(db.String(255), nullable=True)
+    city = db.Column(db.String(512), nullable=True)
+    address = db.Column(db.String(1024), nullable=True)
+    email = db.Column(db.String(255), nullable=True)
+    phone = db.Column(db.String(14), nullable=True)
 
+    created_at = db.Column(
+        db.DateTime,
+        default=lambda: datetime.utcnow() + timedelta(hours=3)
+    )
+    
+    def to_dict(self):
+        return {
+            'id':self.id,
+            'name':self.name,
+            'city':self.city,
+            'phone':self.phone,
+            'email':self.email,
+            'created':self.created_at,
+            'address':self.address,
+            'data':self.data
+        }
 # ========================
 # LOGGING
 # ========================
@@ -467,6 +493,198 @@ def register():
 
     return jsonify({'msg': f'Staff {name} created'})
 
+@app.route('/api/create_order', methods=['POST'])
+def create_order():
+    data = request.get_json()
+
+    cart = data.get('cart', [])
+    temp_id = data.get('temp_id')
+
+    if not cart:
+        return jsonify({
+            'error': 'Cart is empty'
+        }), 400
+
+    try:
+        order = Order(
+            temp_id=temp_id,
+            data=cart
+        )
+
+        db.session.add(order)
+        db.session.commit()
+
+        return jsonify({
+            'success': True,
+            'order_id': order.id
+        }), 201
+
+    except Exception as e:
+        db.session.rollback()
+
+        return jsonify({
+            'success': False,
+            'error': str(e)
+        }), 500
+
+# @app.route('/checkout', methods=['GET'])
+# def checkout():
+#     id = request.args.get('order')
+#     order = Order.query.filter_by(id=id).first()
+
+#     if not order:
+#         return jsonify({
+#             'success': False,
+#             'message': 'Order not found'
+#         }), 404
+
+#     item_ids = [item['id'] for item in order.data]
+
+#     books = Book.query.filter(
+#         Book.id.in_(item_ids)
+#     ).all()
+
+#     return jsonify({
+#         'success': True,
+#         'order': {
+#             'id': order.id,
+#             'temp_id': order.temp_id,
+#             'data': order.data,
+#             'name': order.name,
+#             'city': order.city,
+#             'address': order.address,
+#             'email': order.email,
+#             'phone': order.phone,
+#             'created_at': order.created_at.isoformat()
+#         },
+#         'books': [
+#             {
+#                 'id': book.id,
+#                 'title': book.title,
+#                 'price': book.price
+#             }
+#             for book in books
+#         ]
+#     })
+
+import requests
+from flask import request, jsonify
+from flask_mail import Message
+
+def format_phone(phone):
+    phone = str(phone).replace("+", "").strip()
+
+    if phone.startswith("0"):
+        phone = "254" + phone[1:]
+
+    elif phone.startswith("7"):
+        phone = "254" + phone
+
+    return phone
+
+def initiate_payment(phone, amount):
+    print(phone, amount)
+    try:
+        response = requests.post(
+            'https://app.tunupublishers.com/api/pay',
+            json={
+                'phone': format_phone(phone),
+                'amount': amount
+            },
+            timeout=30
+        )
+
+        return response.json()
+
+    except Exception as e:
+        return {
+            'success': False,
+            'error': str(e)
+        }
+        
+counties = [
+    "Nairobi","Kiambu","Machakos","Kajiado","Murang'a",
+    "Nakuru","Nyeri","Kirinyaga","Nyandarua","Embu","Tharaka Nithi","Meru","Laikipia","Narok","Bomet","Kericho","Makueni",
+    "Mombasa","Kwale","Kilifi","Tana River","Lamu","Taita Taveta",
+    "Garissa","Wajir","Mandera","Marsabit","Isiolo","Kitui",
+    "Turkana","West Pokot","Samburu","Trans Nzoia","Uasin Gishu",
+    "Elgeyo Marakwet","Nandi","Baringo","Kakamega","Vihiga",
+    "Bungoma","Busia","Siaya","Kisumu","Homa Bay","Migori",
+    "Kisii","Nyamira"
+]
+
+def shipping_fee(county):
+    c = county.strip()
+
+    near = {"Nairobi","Kiambu","Machakos","Kajiado","Murang'a"}
+
+    if c in near:
+        return 250
+
+    if c in counties[:17]: 
+        return 300
+
+    return 400
+
+@app.route('/api/checkout', methods=['POST'])
+def checkout():
+    try:
+        payload = request.get_json()
+
+        if not payload:
+            return jsonify({"error": "Invalid payload"}), 400
+
+        name = payload.get("name")
+        email = payload.get("email")
+        phone = payload.get("phone")
+        county = payload.get("county")
+        address = payload.get("addr")
+        order = payload.get("order_id")
+
+        if not all([name, email, phone, county, address, order]):
+            return jsonify({"error": "Missing fields"}), 400
+
+        if not order:
+            return jsonify({"error": "Cart empty"}), 400
+
+        subtotal = 0
+
+        shipping = shipping_fee(county)
+        
+        grand_total = subtotal + shipping
+
+        payment_res = initiate_payment(phone, grand_total)
+
+        if payment_res.get("ResponseCode") != "0":
+            return jsonify({
+                "error": "STK push failed",
+                "details": payment_res
+            }), 400
+
+        checkout_request_id = payment_res.get("CheckoutRequestID")
+
+        order = Order(
+            name=name,
+            email=email,
+            phone=phone,
+            county=county,
+            address=address,
+            total=grand_total,
+            checkout_request_id=checkout_request_id,
+            status="PENDING"
+        )
+
+        db.session.add(order)
+        db.session.commit()
+
+        return jsonify({
+            "message": "STK push sent",
+            "checkout_request_id": checkout_request_id,
+            "amount": grand_total
+        }), 200
+
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 
 @app.route('/admin/api/get_books', methods=['GET'])
 @protected

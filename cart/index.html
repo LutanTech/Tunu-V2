@@ -1159,12 +1159,11 @@
     </div>
 </footer>
 
+<script src="/resources/base/base.js"></script>
 
     <script>
-        let cart = JSON.parse(localStorage.getItem('cart') || '[]');
 
         function updateCartUI(){
-            cart = JSON.parse(localStorage.getItem('cart') || '[]');
 
             const container = document.getElementById('cart-items-container')
             const total = document.getElementById('cart-total-price')
@@ -1467,10 +1466,6 @@
                     <span><i class="fas fa-tag"></i> Bag Subtotal</span>
                     <span style="font-weight:600;">KES ${subtotal.toLocaleString()}</span>
                 </div>
-                <div class="summary-item">
-                    <span><i class="fas fa-truck"></i> Estimated Delivery</span>
-                    <span style="color:#27ae60; font-weight:700;">FREE</span>
-                </div>
                 <div class="summary-item" style="border-top:1px solid #eee; padding-top:15px; margin-top:15px;">
                     <span style="font-weight:800; font-size:16px; color:#1a1a1a;">Order Total</span>
                     <span style="font-weight:900; font-size:22px; color:var(--magenta);">KES ${subtotal.toLocaleString()}</span>
@@ -1533,10 +1528,14 @@
         const uid = localStorage.getItem('temp_id') || crypto.randomUUID(4)
         let ids = []
         cart.forEach(i=>{
-            ids.push(i.id)
+            const item = {
+                'id':i.id,
+                'qty':i.quantity
+            }
+            ids.push(item)
         })
 
-        fetch('/create_order', {
+        fetch('http://127.0.0.1:5000/api/create_order', {
             method:'POST',
             headers:{
                 'Content-Type':'application/json'
@@ -1544,11 +1543,11 @@
         })
         .then(r=>r.json())
         .then(data=>{
-            if(data.msg && data.order_id){
+            if(data.success && data.order_id){
                 localStorage.setItem('temp_id', uid)
-               window.location.href = `/checkout?order=${data.order_id}`
+               window.location.href = `/checkout/?order=${data.order_id}`
             } else{
-                showAlert('error', data.error)
+                showAlert('error', data.error || 'An error occured')
             }
         })
         .catch(e=>{
