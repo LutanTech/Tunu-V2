@@ -483,7 +483,7 @@
                         <label for="phone">M-Pesa Phone Number</label>
                         <div class="phone-input-wrapper">
                             <span class="phone-prefix">+254</span>
-                            <input type="tel" id="phone" required placeholder="712345678" pattern="[0-9]{9}" title="Enter your 9-digit mobile number, e.g. 712345678">
+                            <input type="tel" id="phone" required placeholder="712345678" title="Enter your 9-digit mobile number, e.g. 712345678">
                         </div>
                     </div>
 
@@ -623,6 +623,10 @@
                   const span = document.querySelector('#deliverySpan')
                   span.textContent = fee;
                   renderSummary()
+                  setTimeout(() =>{
+                    renderSummary()
+
+                  }, 4000)
               });
         function showToast(message, type = 'info') {
             const toast = document.getElementById('toast');
@@ -671,7 +675,7 @@
             const total = sum + parseInt(span.textContent)
             
 
-            subtotalEl.innerText = `KES ${total }`;
+            subtotalEl.innerText = `KES ${sum }`;
             totalEl.innerText = `KES ${total }`;
             
             btnAmountEl.innerText = total;
@@ -680,7 +684,7 @@
         function handlePayment(e) {
             e.preventDefault();
             
-            const rawPhone = document.getElementById('phone').value.trim();
+            let rawPhone = document.getElementById('phone').value.trim();
             const payButton = document.getElementById('pay-button');
             const paySpinner = document.getElementById('pay-spinner');
             const payText = document.getElementById('pay-text');
@@ -699,7 +703,19 @@
                 return;
             }
 
-            const formattedPhone = "254" + rawPhone;
+            rawPhone = rawPhone.replace(/\s+/g, '');
+            
+            if (rawPhone.startsWith('254')) {
+            } else if (rawPhone.startsWith('0')) {
+                rawPhone = '254' + rawPhone.slice(1);
+            } else if (rawPhone.startsWith('7') || rawPhone.startsWith('1')) {
+                rawPhone = '254' + rawPhone;
+            } else {
+                showToast('Invalid phone number', 'error');
+                return;
+            }
+            
+            const formattedPhone = rawPhone;
 
             payButton.disabled = true;
             paySpinner.style.display = 'block';
