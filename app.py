@@ -202,9 +202,13 @@ class Order(db.Model):
     name = db.Column(db.String(255), nullable=True)
     city = db.Column(db.String(512), nullable=True)
     address = db.Column(db.String(1024), nullable=True)
+    grand_total = db.Column(db.Float(1024), nullable=True)
+    address = db.Column(db.String(1024), nullable=True)
     email = db.Column(db.String(255), nullable=True)
     phone = db.Column(db.String(14), nullable=True)
-
+    checkout_request_id = db.Column(db.String(100), nullable=True)
+    status = db.Column(db.String(255), nullable=True, default='PENDING')
+    
     created_at = db.Column(
         db.DateTime,
         default=lambda: datetime.utcnow() + timedelta(hours=3)
@@ -527,46 +531,6 @@ def create_order():
             'error': str(e)
         }), 500
 
-# @app.route('/checkout', methods=['GET'])
-# def checkout():
-#     id = request.args.get('order')
-#     order = Order.query.filter_by(id=id).first()
-
-#     if not order:
-#         return jsonify({
-#             'success': False,
-#             'message': 'Order not found'
-#         }), 404
-
-#     item_ids = [item['id'] for item in order.data]
-
-#     books = Book.query.filter(
-#         Book.id.in_(item_ids)
-#     ).all()
-
-#     return jsonify({
-#         'success': True,
-#         'order': {
-#             'id': order.id,
-#             'temp_id': order.temp_id,
-#             'data': order.data,
-#             'name': order.name,
-#             'city': order.city,
-#             'address': order.address,
-#             'email': order.email,
-#             'phone': order.phone,
-#             'created_at': order.created_at.isoformat()
-#         },
-#         'books': [
-#             {
-#                 'id': book.id,
-#                 'title': book.title,
-#                 'price': book.price
-#             }
-#             for book in books
-#         ]
-#     })
-
 import requests
 from flask import request, jsonify
 from flask_mail import Message
@@ -639,18 +603,47 @@ def checkout():
         phone = payload.get("phone")
         county = payload.get("county")
         address = payload.get("addr")
-        order = payload.get("order_id")
+        order_id = payload.get("order_id")
 
-        if not all([name, email, phone, county, address, order]):
+        if not all([name, email, phone, county, address, order_id]):
             return jsonify({"error": "Missing fields"}), 400
 
-        if not order:
-            return jsonify({"error": "Cart empty"}), 400
+        # Fetch order
+        ord = Order.query.filter_by(id=order_id).first()
+
+        if not ord:
+            return jsonify({"error": "Order not found"}), 404
+
+        # Order data expected:
+        # [{"id":"BK-98VH","qty":2}, {"id":"BK-E27D","qty":1}]
+        items = ord.data
 
         subtotal = 0
+        purchased_books = []
+
+        for item in items:
+            book = Book.query.filter_by(id=item["id"]).first()
+
+            if not book:
+                continue
+
+            qty = int(item.get("qty", 1))
+            line_total = book.newPrice * qty
+
+            subtotal += line_total
+
+            purchased_books.append({
+                "id": book.id,
+                "title": book.title,
+                "price": book.newPrice,
+                "qty": qty,
+                "total": line_total
+            })
+
+        if subtotal <= 0:
+            return jsonify({"error": "No valid books found"}), 400
 
         shipping = shipping_fee(county)
-        
         grand_total = subtotal + shipping
 
         payment_res = initiate_payment(phone, grand_total)
@@ -663,28 +656,33 @@ def checkout():
 
         checkout_request_id = payment_res.get("CheckoutRequestID")
 
-        order = Order(
+        checkout_order = Order(
             name=name,
             email=email,
             phone=phone,
-            county=county,
+            city=county,
             address=address,
-            total=grand_total,
+            grand_total=grand_total,
             checkout_request_id=checkout_request_id,
             status="PENDING"
         )
 
-        db.session.add(order)
+        db.session.add(checkout_order)
         db.session.commit()
 
         return jsonify({
             "message": "STK push sent",
             "checkout_request_id": checkout_request_id,
-            "amount": grand_total
+            "subtotal": subtotal,
+            "shipping": shipping,
+            "amount": grand_total,
+            "items": purchased_books
         }), 200
 
     except Exception as e:
-        return jsonify({"error": str(e)}), 500
+        return jsonify({
+            "error": str(e)
+        }), 500
 
 @app.route('/admin/api/get_books', methods=['GET'])
 @protected
@@ -845,6 +843,6 @@ def authorize_admin(staff):
 if __name__ == '__main__':
     with app.app_context():
         db.create_all()
-    app.run(port=5000, host='0.0.0.0', debug=True)
+    app.run(debug=True)
     
     

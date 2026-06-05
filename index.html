@@ -894,7 +894,6 @@
             fetch(`${API_URL}/get_books`)
             .then(r=>r.json())
             .then(data=>{
-                console.log(data)
                 booksData = data
                 renderBooks('rating')
             })
