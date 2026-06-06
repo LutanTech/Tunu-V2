@@ -514,7 +514,7 @@
                         notify('Access Granted', `Welcome back, ${data.staff.name || 'Publisher Staff'}. Redirecting you to your portal.`, 'success', 4000);
                         
                         setTimeout(() => {
-                            window.location.href = data.staff.is_admin ? 'admin_dashboard.html' : '/staff/dashboard';
+                            window.location.href = data.staff.is_admin ? '/staff/control' : '/staff/dashboard';
                         }, 1500);
                     } else {
                         throw new Error(data.message || 'Invalid Staff ID or password combo.');

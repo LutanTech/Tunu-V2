@@ -103,10 +103,11 @@ body { font-family: 'Segoe UI', system-ui, sans-serif; background: var(--bg); co
 table { width: 100%; border-collapse: collapse; }
 th { text-align: left; padding: 12px; font-size: 0.75rem; color: #999; text-transform: uppercase; border-bottom: 1px solid #eee; }
 td { padding: 15px 12px; font-size: 0.9rem; border-bottom: 1px solid #f9f9f9; }
-.status-pill { padding: 4px 10px; border-radius: 20px; font-size: 0.7rem; font-weight: bold; }
-.status-success { background: #dcfce7; color: #15803d; }
-.status-warning { background: #fef9c3; color: #854d0e; }
-.status-danger { background: #fee2e2; color: #991b1b; }
+.status-pill { padding: 4px 10px; border-radius: 20px; font-size: 0.7rem; font-weight: bold; max-width: fit-content; }
+.status-paid { background: #dcfce7; color: #15803d; }
+.status-pending { background: #fef9c3; color: #854d0e; }
+.status-initiated { background: #e2f5fe; color: #0040ff; }
+.status-canceled { background: #fee2e2; color: #ff0000; }
 
 .btn-primary { background: var(--magenta); color: white; border: none; padding: 10px 20px; border-radius: 2px; cursor: pointer; font-weight: 600; font-size: 0.85rem; }
 .btn-secondary { background: #eee; color: #333; border: none; padding: 10px 20px; border-radius: 2px; cursor: pointer; font-weight: 600; font-size: 0.85rem; }

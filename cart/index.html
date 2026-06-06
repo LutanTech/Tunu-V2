@@ -1,15 +1,9 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-	<title>
-		My Bag | TUNU Publishers
-	</title>
-
-	<!-- PRIMARY SEO -->
+    <title>TUNU Publishers | Elimu ni Tunu</title>
 	<meta name="title" content="TUNU Publishers | Elimu ni Tunu">
 
 	<meta name="description"
@@ -17,7 +11,9 @@
 
 	<meta name="keywords"
 		content="TUNU Publishers, CBC books Kenya, novels, educational books, Grade books, revision books, story books, poetry books, publishers in Kenya, children's books, elimu ni tunu">
-
+    
+    <link rel="stylesheet" href="/resources/base/base.css">
+    <!-- <script>(function(s){s.dataset.zone='11098252',s.src='https://n6wxm.com/vignette.min.js'})([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement('script')))</script> -->
 	<meta name="author" content="TUNU Publishers">
 
 	<meta name="robots" content="index, follow">
@@ -35,9 +31,9 @@
 	<link rel="canonical" href="https://www.tunupublishers.com">
 
 	<!-- ICONS -->
-	<link rel="icon" type="image/png" href="/static/icons/tunu_logo.png">
+	<link rel="icon" type="image/png" href="/assets/images/logo.png">
 
-	<link rel="apple-touch-icon" href="/static/icons/tunu_logo.png">
+	<link rel="apple-touch-icon" href="/assets/images/logo.png">
 
 	<!-- OPEN GRAPH -->
 	<meta property="og:type" content="website">
@@ -52,7 +48,7 @@
 
     <meta name="google-site-verification" content="m92xg8EhgbFUx9VwfR6tNqK4UHym8uwtAHfDtcRYjwA" />
 
-	<meta property="og:image" content="https://www.tunupublishers.com/static/icons/tunu_logo.png">
+	<meta property="og:image" content="https://www.tunupublishers.com/assets/images/logo.png">
 
 	<meta property="og:locale" content="en_KE">
 
@@ -63,7 +59,7 @@
 
 	<meta name="twitter:description" content="Kenya's trusted source for CBC books, educational materials, novels, poetry and children's learning resources.">
 
-	<meta name="twitter:image" content="https://www.tunupublishers.com/static/icons/tunu_logo.png">
+	<meta name="twitter:image" content="https://www.tunupublishers.com/assets/images/logo.png">
 
 	<!-- STRUCTURED DATA -->
 	<script type="application/ld+json">
@@ -72,8 +68,8 @@
 			"@type": "BookStore",
 			"name": "TUNU Publishers",
 			"url": "https://www.tunupublishers.com",
-			"logo": "https://www.tunupublishers.com/static/icons/tunu_logo.png",
-			"image": "https://www.tunupublishers.com/static/icons/tunu_logo.png",
+			"logo": "https://www.tunupublishers.com/assets/images/logo.png",
+			"image": "https://www.tunupublishers.com/assets/images/logo.png",
 			"description": "TUNU Publishers provides CBC books, educational resources, novels, poetry and children's learning materials in Kenya.",
 			"brand":
 			{
@@ -97,810 +93,36 @@
 
 	<!-- FONT AWESOME -->
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="/resources/base/base.css">
 
-	
 
-<style>
-    :root {
-        --magenta: #8B008B;
-        --dark-magenta: #4B004B;
-        --orangered: #FF4500;
-        --white: #FFFFFF;
-        --light-bg: #f9f9f9;
-        --gray-text: #666;
-        --border-color: #eee;
-        --shadow: 0 4px 15px rgba(0,0,0,0.1);
-    }
-
-    * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-    }
-
-    body {
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        background-color: var(--light-bg);
-        color: #333;
-        line-height: 1.6;
-        overflow-x: hidden;
-    }
-
-    .container {
-        max-width: 1200px;
-        margin: 0 auto;
-        padding: 0 20px;
-    }
-
-    /* --- TOP BAR --- */
-    .top-bar {
-        background: var(--white);
-        border-bottom: 1px solid var(--border-color);
-        padding: 8px 0;
-        display: none;
-    }
-
-    @media (min-width: 768px) {
-        .top-bar { display: block; }
-    }
-
-    .top-bar-content {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        font-size: 14px;
-    }
-
-    .contact-info {
-        display: flex;
-        gap: 20px;
-    }
-    .float-content{
-        position:relative;
-    }
-    .float-count{
-        background:red;
-        font-size:small;
-        padding:2px;
-        width:20px;
-        height:20px;
-        border-radius:50%;
-        display:flex;
-        justify-content:center;
-        align-items:center;
-        position:absolute;
-        right:-20px;
-        font-weight:bolder;
-
-    }
-
-    .contact-item i {
-        color: var(--magenta);
-        margin-right: 8px;
-    }
-    .v{
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        color: grey;
-        font-size: small;
-        margin-bottom: 20px;
-    }
-
-    .search-area {
-        display: flex;
-        align-items: center;
-        gap: 15px;
-    }
-
-    .search-box {
-        display: flex;
-        border: 1px solid #ccc;
-        border-radius: 4px;
-        overflow: hidden;
-    }
-
-    .search-box input {
-        padding: 5px 10px;
-        border: none;
-        outline: none;
-        width: 200px;
-    }
-
-    .search-btn {
-        background: var(--magenta);
-        color: white;
-        border: none;
-        padding: 5px 15px;
-        cursor: pointer;
-        transition: background 0.3s;
-    }
-
-    .search-btn:hover { background: var(--dark-magenta); }
-
-    .cart-trigger {
-        background: var(--magenta);
-        color: white;
-        padding: 8px 24px;
-        border-radius: 50px;
-        font-weight: 700;
-        border: none;
-        cursor: pointer;
-        text-transform: uppercase;
-        position: relative;
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        transition: transform 0.2s, box-shadow 0.2s;
-        box-shadow: var(--shadow);
-    }
-
-    .cart-trigger:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 6px 20px rgba(139, 0, 139, 0.3);
-    }
-
-    .cart-count {
-        background: var(--orangered);
-        color: white;
-        font-size: 11px;
-        min-width: 20px;
-        height: 20px;
-        padding: 0 4px;
-        border-radius: 10px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-
-    /* --- HEADER --- */
-    header {
-        background: var(--magenta);
-        position: sticky;
-        top: 0;
-        z-index: 1000;
-        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-    }
-
-    .header-content {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 12px 0;
-    }
-
-    .logo-area {
-        display: flex;
-        align-items: center;
-        text-decoration: none;
-    }
-
-    .logo-img {
-        height: 48px;
-        padding: 4px;
-        border-radius: 4px;
-        margin-right: 12px;
-    }
-
-    .brand-text { color: white; }
-    .brand-text h1 { font-size: 24px; line-height: 1; }
-    .brand-text p { font-size: 10px; text-transform: uppercase; letter-spacing: 2px; }
-
-    nav { display: none; }
-    @media (min-width: 1024px) {
-        nav { display: flex; gap: 5px; }
-    }
-
-    .nav-link {
-        color: white;
-        text-decoration: none;
-        padding: 8px 15px;
-        border-radius: 4px;
-        text-transform: uppercase;
-        font-size: 13px;
-        font-weight: 500;
-        transition: background 0.3s;
-    }
-
-    .nav-link:hover { background: rgba(255, 69, 0, 0.8); }
-
-    /* --- HERO CAROUSEL --- */
-    .hero-carousel {
-        height: 550px;
-        position: relative;
-        background: #1a1a1a;
-        overflow: hidden;
-    }
-
-    .carousel-slide {
-        position: absolute;
-        inset: 0;
-        opacity: 0;
-        transition: opacity 1s ease-in-out;
-        display: flex;
-        align-items: center;
-    }
-
-    .carousel-slide.active {
-        opacity: 1;
-        z-index: 1;
-    }
-
-    .carousel-img {
-        position: absolute;
-        inset: 0;
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        opacity: 0.6;
-    }
-
-    .carousel-content {
-        position: relative;
-        z-index: 2;
-        color: white;
-        max-width: 700px;
-        padding: 20px;
-    }
-
-    .carousel-content h2 {
-        font-size: clamp(32px, 5vw, 56px);
-        margin-bottom: 20px;
-        text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
-        font-weight: 800;
-    }
-
-    .carousel-content p {
-        font-size: 18px;
-        margin-bottom: 35px;
-        text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
-    }
-
-    .btn {
-        display: inline-flex;
-        align-items: center;
-        gap: 10px;
-        padding: 14px 32px;
-        font-weight: 700;
-        text-transform: uppercase;
-        letter-spacing: 1px;
-        cursor: pointer;
-        border: none;
-        transition: all 0.3s;
-        text-decoration: none;
-    }
-
-    .btn-primary {
-        background: var(--orangered);
-        color: white;
-        box-shadow: 0 4px 15px rgba(255, 69, 0, 0.3);
-    }
-
-    .btn-primary:hover {
-        background: #e63e00;
-        transform: translateY(-3px);
-        box-shadow: 0 6px 20px rgba(255, 69, 0, 0.4);
-    }
-
-    .btn-secondary {
-        background: var(--magenta);
-        color: white;
-    }
-
-    .btn-small { padding: 10px 16px; font-size: 12px; width: 100%; justify-content: center; }
-
-    .carousel-nav {
-        position: absolute;
-        bottom: 30px;
-        left: 50%;
-        transform: translateX(-50%);
-        display: flex;
-        gap: 12px;
-        z-index: 3;
-    }
-
-    .dot {
-        width: 12px;
-        height: 12px;
-        background: rgba(255,255,255,0.3);
-        border-radius: 50%;
-        cursor: pointer;
-        transition: all 0.3s;
-    }
-    .mobile-menu-btn{
-        background: rgba(0, 128, 0, 0);
-        display: flex;
-        gap: 2px;
-        width: 40px;
-        padding: 2px;
-        z-index: 30000000000000000000;
-        border: 0;
-        height: 30px;
-        justify-content: space-between;
-        flex-direction: column;
-        cursor: pointer;
-        &:hover{
-            .span{
-                background: rgb(78, 7, 78);
-            }
-        }
-        .span{
-            background: rgb(255, 255, 255);
-            padding: 2px;
-            border-radius: 5px;
-            width: 100%;
-            height: 5px;
-            box-shadow: 2px 2px 5px black;
-        }
-    }
-
-
-    @media (min-width:768px) {
-       .mobile-menu-btn{
-        display: none;
-      } 
-    }
-    
-
-    .dot.active {
-        background: var(--orangered);
-        width: 30px;
-        border-radius: 10px;
-    }
-
-    /* --- CATEGORIES & TABS --- */
-    .category-section { padding: 80px 0; }
-    .category-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-        gap: 25px;
-    }
-
-    .category-card {
-        background: white;
-        padding: 20px;
-        text-align: center;
-        box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-        transition: transform 0.3s;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-    }
-
-    .category-card:hover { transform: translateY(-10px); }
-    .category-card img { width: 100%; height: 180px; object-fit: cover; margin-bottom: 20px; }
-
-    .tabs-header {
-        display: flex;
-        justify-content: center;
-        gap: 15px;
-        margin-bottom: 40px;
-        flex-wrap: wrap;
-    }
-
-    .tab-btn {
-        background: white;
-        border: 2px solid var(--magenta);
-        color: var(--magenta);
-        padding: 12px 30px;
-        font-weight: 700;
-        border-radius: 50px;
-        cursor: pointer;
-        transition: all 0.3s;
-    }
-    .mobile-menu-overlay{
-        height: 100%;
-        width: 100%;
-        background: rgba(0, 0, 0, 0.312);
-        position: fixed;
-        display: flex;
-        justify-content: start;
-        align-items: start;
-        z-index: 30000;
-        top: 0;
-    }
-    .mobile-menu{
-        top: 0;
-        width: 100%;
-        max-height: 100%;
-        background: white;
-        min-height: 300px;
-        max-width: 500px;
-        margin: 0 auto;
-        position: relative;
-    }
-    .flex{
-        display: flex;
-    }
-    .none{
-        display: none;
-    }
-    .mobile-search{
-        display: flex;
-        padding: 10px;
-        gap: 10px;
-        input{
-            padding: 5px 10px;
-            border: 2px solid rgb(200, 0, 255);
-            width: 100%;
-            outline: 0;
-            border-radius: 2px;
-
-        }
-        &:focus{
-            outline: 2px solid magenta;
-        }
-
-    }
-    .mobile-search-icon{
-        background: magenta;
-        padding: 2px 10px;
-        cursor: pointer;
-        border-radius: 2px;
-        color: white;
-        &:active{
-            scale: 0.9;
-        }
-    }
-
-    .tab-btn.tab-active { background: var(--magenta); color: white; }
-
-    .book-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-        gap: 20px;
-    }
-    .empty-cart{
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        padding: 10px;
-        gap: 20px;
-        border: 1px solid #0000001f;
-        flex-grow: 1;
-        height: 100%;
-        flex-direction: column;
-        border-radius: 10px;
-        i{
-            font-size:3em;
-            opacity:0.4;
-        }
-    }
-
-    .book-card {
-        background: white;
-        padding: 10px;
-        text-align: center;
-        position: relative;
-        transition: all 0.3s;
-        border: 1px solid var(--border-color);
-    }
-
-    .book-card:hover { box-shadow: var(--shadow); border-color: transparent; }
-
-    .discount-badge {
-        position: absolute;
-        top: 15px;
-        left: 15px;
-        background: var(--orangered);
-        color: white;
-        font-size: 11px;
-        font-weight: 800;
-        padding: 4px 10px;
-        z-index: 5;
-    }
-
-    .book-img-wrapper {
-        min-height: 150px;
-        display: flex;
-        align-items: center;
-        max-height:200px;
-        justify-content: center;
-        object-fit:cover;
-        cursor: pointer;
-    }
-
-
-    .book-img-wrapper img {
-        max-height: 200px; 
-         width: 100%; 
-         object-fit: cover;
-        }
-    @media (min-width:768px) {
-        
-    .book-img-wrapper img {
-        max-height: 200px; 
-         width: 100%; 
-         object-fit: contain;
-        }
-        
-    }
-
-    /* --- CART DRAWER --- */
-    .cart-drawer {
-        position: fixed;
-        top: 0;
-        padding-bottom:10px;
-        right: -450px;
-        width: 100%;
-        max-width: 450px;
-        height: 100%;
-        background: white;
-        z-index: 2000;
-        box-shadow: -5px 0 25px rgba(0,0,0,0.15);
-        transition: right 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
-        display: flex;
-        flex-direction: column;
-    }
-
-    .cart-drawer.open { right: 0px; }
-
-    .cart-header {
-        padding: 25px;
-        background: var(--magenta);
-        color: white;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-    }
-
-    .cart-items { flex: 1; overflow-y: auto; padding: 25px; }
-
-    .cart-item {
-        display: flex;
-        gap: 15px;
-        margin-bottom: 20px;
-        border-bottom: 1px solid #eee;
-        padding-bottom: 20px;
-        align-items: center;
-    }
-
-    .cart-item img { width: 60px; height: 80px; object-fit: contain; background: #f4f4f4; border-radius: 4px; }
-
-    .checkout-btn {
-        width: 100%;
-        background: var(--orangered);
-        color: white;
-        border: none;
-        padding: 18px;
-        border-radius: 4px;
-        font-weight: 800;
-        cursor: pointer;
-        font-size: 16px;
-    }
-
-    .overlay {
-        position: fixed;
-        inset: 0;
-        background: rgba(0,0,0,0.6);
-        display: none;
-        z-index: 1500;
-        backdrop-filter: blur(2px);
-    }
-
-    /* --- FOOTER --- */
-    footer {
-        background: #2a002a;
-        color: white;
-        padding: 80px 0 30px;
-        margin-top: 50px;
-    }
-
-    .footer-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-        gap: 40px;
-        margin-bottom: 50px;
-    }
-
-    .footer-col h4 {
-        color: var(--orangered);
-        margin-bottom: 25px;
-        font-size: 18px;
-        text-transform: uppercase;
-        letter-spacing: 1px;
-        border-left: 4px solid var(--orangered);
-        padding-left: 15px;
-    }
-
-    .footer-links { list-style: none; }
-    .footer-links li { margin-bottom: 12px; }
-    .footer-links a {
-        color: #ccc;
-        text-decoration: none;
-        font-size: 14px;
-        transition: color 0.3s;
-    }
-
-    .footer-links a:hover { color: var(--white); }
-
-    .footer-contact li {
-        display: flex;
-        gap: 12px;
-        color: #ccc;
-        font-size: 14px;
-        margin-bottom: 15px;
-    }
-
-    .footer-contact i { color: var(--orangered); margin-top: 4px; }
-
-    .social-links { display: flex; gap: 15px; margin-top: 20px; }
-    .social-links a {
-        width: 35px;
-        height: 35px;
-        background: rgba(255,255,255,0.1);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        border-radius: 50%;
-        color: white;
-        text-decoration: none;
-        transition: 0.3s;
-    }
-    .social-links a:hover { background: var(--orangered); }
-
-    .footer-bottom {
-        border-top: 1px solid rgba(255,255,255,0.1);
-        padding-top: 30px;
-        text-align: center;
-        color: #888;
-        font-size: 14px;
-    }
-
-    .whatsapp-float, .cart-float {
-        position: fixed;
-        bottom: 30px;
-        right: 30px;
-        background: #25d366;
-        color: white;
-        width: 45px;
-        height: 45px;
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 25px;
-        z-index: 1000;
-        cursor:pointer;
-        text-decoration: none;
-        box-shadow: 0 10px 25px rgba(37, 211, 102, 0.4);
-        transition: transform 0.3s;
-    }
-    .cart-float{
-        background:rgb(141, 37, 211);
-        bottom:90px;
-    }
-
-    .whatsapp-float:hover, .cart-float:hover { transform: scale(1.1) rotate(5deg); }
-
-    @media (max-width: 768px) {
-        .hero-carousel { height: 400px; }
-        .header-content { padding: 12px 20px; }
-    }
-    .alert{
-        position:fixed;
-        top:10px;
-        right:-100%;
-        padding:10px 20px;
-        max-width:300px;
-        box-shadow:5px 5px 10px rgba(0, 0, 0, 0.23);
-        z-index:300000000000000000;
-        background: white;
-        display:flex;
-        gap:10px;
-        border-radius:5px;
-        transition: all 0.5s ease-in-out;
-    }
-    .alert.seen{
-        right: 10px;
-        transition: all 0.5s ease-in-out;
-    }
-    .alert-icon{
-        font-size:2em;
-        border-right:2px solid  rgba(0, 0, 0, 0.58);
-        padding-right:10px;
-    }
-    .alert-title{
-        font-weight:700;
-    }
-    .alert-text{
-        font-size:small;
-    }
-    .-error{
-        i{
-            color:red;
-        }
-        .alert-title{
-            color:red;
-        }
-    }
-    .-success{
-        i{
-            color:green;
-        }
-        .alert-title{
-            color:green;
-        }
-    }
-    .-info{
-        i{
-            color:blue;
-        }
-        .alert-title{
-            color:blue;
-        }
-    }
-    .cart-alert{
-        position: fixed;
-        bottom: -10%;
-        max-width: 200px;
-        margin: auto;
-        background: #ff56ff;
-        z-index: 30000;
-        display: flex;
-        gap: 10px;
-        padding: 2px 10px;
-        left: 0;
-        right: 0;
-        border-radius: 5px;
-        justify-content: center;
-        align-items: center;
-        color: white;
-        transition: all 0.5s ease-in-out;
-        pointer-events:none;
-    }
-    .cart-alert.seen{
-        bottom:10%;
-        transition: all 0.5s ease-in-out;
-
-    }
-    .menu-items{
-        display: flex;
-        flex-direction: column;
-        gap: 2px;
-        padding: 10px;
-    }
-    .mobile-nav-link{
-        padding: 4px 10px;
-        color: magenta;
-        flex-grow: 1;
-        background: #00000007;
-        text-decoration: none;
-        &:hover{
-            background: #00000022;
-        }
-    }
-    .mobile-tunu-logo{
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        gap: 0;
-        img{
-            width: 100px;
-            margin: 10px auto;
-        }
-    }
-    .mobile-menu-close{
-    border-radius: 50%;
-    width: 35px;
-    height: 35px;
-    font-size: 2em;
-    display: flex;
-    justify-content: center;
-    color: red;
-    border: 1px solid;
-    position: absolute;
-    right: 20px;
-    top: 20px;
-    cursor: pointer;
-    &:active{
-        scale: 0.9;
-    }
-    }
-</style>
 </head>
 <body>
+
+    <div class="overlay" id="overlay" onclick="closeCart()"></div>
+
+    <div class="cart-drawer" id="cart-drawer">
+        <div class="cart-header">
+            <h3><i class="fas fa-shopping-basket"></i> Your Basket</h3>
+            <button onclick="closeCart()" style="background:none; border:none; color:white; cursor:pointer; font-size:24px;"><i class="fas fa-times-circle"></i></button>
+        </div>
+        <div class="cart-items" id="cart-items-list">
+            <div style="text-align:center; color:#999; margin-top:50px;">
+                <i class="fas fa-shopping-cart fa-4x" style="margin-bottom:20px; opacity:0.3;"></i>
+                <p>Your cart is empty</p>
+            </div>
+        </div>
+        <div class="cart-footer" style="padding:25px; border-top:1px solid #eee;">
+            <div style="display:flex; justify-content:space-between; font-weight:800; font-size:20px; margin-bottom:20px;">
+                <span>Total:</span>
+                <span id="cart-total" style="color:var(--magenta);">KES 0</span>
+            </div>
+            <button class="checkout-btn" onclick="window.location.href='/cart'">
+                <i class="fas fa-lock"></i> SECURE CHECKOUT
+            </button>
+        </div>
+    </div>
+
     <div class="top-bar">
         <div class="container top-bar-content">
             <div class="contact-info">
@@ -909,7 +131,7 @@
             </div>
             <div class="search-area">
                 <div class="search-box">
-                    <input type="text" placeholder="Search for books..." id="search-input">
+                    <input type="text" placeholder="Search for books...">
                     <button class="search-btn"><i class="fas fa-search"></i></button>
                 </div>
                 <button class="cart-trigger" onclick="openCart()">
@@ -920,55 +142,25 @@
             </div>
         </div>
     </div>
-    <!-- <link rel="stylesheet" href="static/assets/main.css"> -->
-    
-    <div class="mobile-menu-overlay none">
-        
-        <div class="mobile-menu ">
-            <div class="menu-close">
-                <button class="mobile-menu-close" onclick="toggleMenu()">
-                    &times;
-                </button>
-            </div>
-            <div class="mobile-tunu-logo">
-                <img src="/assets/images/logo.png" alt="">
-                <b>TUNU PUBLISHERS</b>
-            </div>
-            <div class="mobile-search">
-                <input type="search" id="mobile-menu-search" placeholder="Search books...">
-                <div class="mobile-search-icon" id="mobile-search-btn"> <i class="fa fa-search"></i></div>
-            </div>
-            <div class="menu-items">
-                <a href="/" class="mobile-nav-link"> <i class="fas fa-home"></i> Home</a>
-                <a href="/books" class="mobile-nav-link"> <i class="fas fa-book"></i> Books</a>
-                <a href="/books?cat=junior" class="mobile-nav-link"> <i class="fas fa-school"></i> Junior School</a>
-                <a href="/books?cat=revision" class="mobile-nav-link"> <i class="fas fa-pen"></i> Revision</a>
-                <a href="/about" class="mobile-nav-link"> <i class="fas fa-info-circle"></i> About Us</a>
-                <a href="/contact_us" class="mobile-nav-link"> <i class="fas fa-phone"> </i> Contact</a>
-            </div>
 
-            <p class="v">
-             <i class="fas fa-code" style="margin-right: 10px;" title="Developed by 🌐 Lutan [+2547 11 80 82 86]"></i><i> v2.4.0 </i>
-            </p>
-        </div>
-    </div>
     <header>
         <div class="container header-content">
-            <a href="/" class="logo-area">
-                <img src="/assets/images/logo.png" alt="TUNU Logo" class="logo-img">
+            <a href="#" class="logo-area">
+                <img src="https://i.ibb.co/CKRYPD4p/image.png" alt="TUNU Logo" class="logo-img">
                 <div class="brand-text">
                     <h1>TUNU</h1>
                     <p>Publishers</p>
                 </div>
             </a>
             <nav>
-                <a href="/" class="nav-link">Home</a>
+                <a href="#" class="nav-link">Home</a>
                 <a href="/books" class="nav-link">Books</a>
-                <a href="/books?cat=junior" class="nav-link">Junior School</a>
-                <a href="/books?cat=revision" class="nav-link">Revision</a>
+                <a href="/books/?cat=junior" class="nav-link">Junior School</a>
+                <a href="/books/?cat=revision" class="nav-link">Revision</a>
                 <a href="/about" class="nav-link">About Us</a>
                 <a href="/contact_us" class="nav-link">Contact</a>
             </nav>
+
             <button class="mobile-menu-btn" onclick="toggleMenu()">
                 <div class="span"></div>
                 <div class="span"></div>
@@ -1083,11 +275,14 @@
 
         <div id="cart-main-container" class="cart-grid">
             <!-- Content Injected via JS -->
+             <div>
+               <i class="fas fa-spiner fa-spin"></i> Loading cart...
+             </div>
         </div>
     </div>
 </div>
 
-    </main>
+</main>
     <a href="https://wa.me/254722682129" target="_blank" class="whatsapp-float"><i class="fab fa-whatsapp"></i></a>
     <div class="cart-float" onclick="openCart()">
         <div class="float-content">
@@ -1095,71 +290,74 @@
         <i class="fas fa-shopping-cart"></i>
         </div>
     </div>
-<!-- Footer -->
 
-<footer>
 
-    <div class="container">
-        <div class="footer-grid">
-            <div>
-                <h3 style="margin-bottom:20px; display:flex; align-items:center; gap:10px;">
-                    <img src="/static/icons/tunu_logo.png" height="35" style=" padding:2px; border-radius:3px;">
-                    TUNU PUBLISHERS
-                </h3>
-                <p style="color:#ccc; font-size:14px; line-height:1.8;">Innovative educational solutions crafted for  learners. We bridge the gap between curriculum and understanding with relevant content.</p>
-                <div class="social-links">
-                    <a href="https://www.facebook.com/p/TUNU-Publishers-61565538623974/" target="_blank"><i class="fab fa-facebook-f"></i></a>
-                    <a href="#"><i class="fab fa-twitter"></i></a>
-                    <a href="#"><i class="fab fa-instagram"></i></a>
-                    <a href="#"><i class="fab fa-linkedin-in"></i></a>
+    <footer>
+
+        <div class="container">
+            <div class="footer-grid">
+                <div>
+                    <h3 style="margin-bottom:20px; display:flex; align-items:center; gap:10px;">
+                        <img src="/assets/images/logo.png" height="35" style=" padding:2px; border-radius:3px;">
+                        TUNU PUBLISHERS
+                    </h3>
+                    <p style="color:#ccc; font-size:14px; line-height:1.8;">Innovative educational solutions crafted for  learners. We bridge the gap between curriculum and understanding with relevant content.</p>
+                    <div class="social-links">
+                        <a href="https://www.facebook.com/p/TUNU-Publishers-61565538623974/" target="_blank"><i class="fab fa-facebook-f"></i></a>
+                        <a id="twitter-link" href="#"><i class="fab fa-twitter"></i></a>
+                        <a id="instagram-link" href="#"><i class="fab fa-instagram"></i></a>
+                        <a id="linked-in-link" href="#"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+    
+                <div class="footer-col">
+                    <h4>Quick Links</h4> 
+                    <ul class="footer-links">
+                        <li><a href="/">Home</a></li>
+                        <li><a href="/about">About TUNU</a></li>
+                        <li><a href="/books/?cat=primary">Primary Books</a></li>
+                        <li><a href="/books/?cat=junior">Junior Secondary</a></li>
+                        <li><a href="/books/?cat=revision">Revision Guides</a></li>
+                    </ul>
+                </div>
+    
+                <div class="footer-col">
+                    <h4>Support</h4>
+                    <ul class="footer-links">
+                        <li><a href="/orders">Order Tracking</a></li>
+                        <li><a href="/delivery_policy">Delivery Policy</a></li>
+                        <li><a href="/privacy_policy">Privacy Policy</a></li>
+                        <li><a href="/terms_of_service">Terms of Service</a></li>
+                        <li><a href="/contact_us">Contact Us</a></li>
+                    </ul>
+                </div>
+    
+                <div class="footer-col">
+                    <h4>Contact Info</h4>
+                    <ul class="footer-contact">
+                        <li><i class="fas fa-map-marker-alt"></i> Harambee Sacco Shopping Centre, Donholm, Nairobi, Kenya</li>
+                        <li><i class="fas fa-phone-alt"></i> +254 722 68 21 29</li>
+                        <li><i class="fas fa-envelope"></i> support@tunupublishers.com</li>
+                        <li><i class="fas fa-clock"></i> Mon-Fri: 8:00am - 5:00pm</li>
+                    </ul>
                 </div>
             </div>
-
-            <div class="footer-col">
-                <h4>Quick Links</h4> 
-                <ul class="footer-links">
-                    <li><a href="/">Home</a></li>
-                    <li><a href="/about">About TUNU</a></li>
-                    <li><a href="/books?cat=primary">Primary Books</a></li>
-                    <li><a href="/books?cat=junior">Junior Secondary</a></li>
-                    <li><a href="/books?cat=junior">Revision Guides</a></li>
-                </ul>
-            </div>
-
-            <div class="footer-col">
-                <h4>Support</h4>
-                <ul class="footer-links">
-                    <li><a href="/orders">Order Tracking</a></li>
-                    <li><a href="/delivery_policy">Delivery Policy</a></li>
-                    <li><a href="/privacy_policy">Privacy Policy</a></li>
-                    <li><a href="/terms_of_service">Terms of Service</a></li>
-                    <li><a href="/contact_us">Contact Us</a></li>
-                </ul>
-            </div>
-
-            <div class="footer-col">
-                <h4>Contact Info</h4>
-                <ul class="footer-contact">
-                    <li><i class="fas fa-map-marker-alt"></i> Harambee Sacco Shopping Centre, Nairobi, Kenya</li>
-                    <li><i class="fas fa-phone-alt"></i> +254 722 68 21 29</li>
-                    <li><i class="fas fa-envelope"></i> info@tunupublishers.com</li>
-                    <li><i class="fas fa-clock"></i> Mon-Sat: 8:00am - 6:00pm</li>
-                </ul>
+    
+            <div class="footer-bottom">
+                <p>&copy; 2026 TUNU Publishers Limited. All Rights Reserved.</p>
+                <div style="margin-top:15px; display:flex; justify-content:center; gap:10px; opacity:0.6;">
+                    <img src="https://img.icons8.com/color/48/000000/visa.png" height="25" />
+                    <img src="https://img.icons8.com/color/48/000000/mastercard.png" height="25" />
+                    <img src="https://img.icons8.com/color/48/000000/mpesa.png" height="25" />
+                </div>
             </div>
         </div>
+    </footer>
+    
 
-        <div class="footer-bottom">
-            <p>&copy; 2026 TUNU Publishers Limited. All Rights Reserved.</p>
-            <div style="margin-top:15px; display:flex; justify-content:center; gap:10px; opacity:0.6;">
-                <img src="https://img.icons8.com/color/48/000000/visa.png" height="25" />
-                <img src="https://img.icons8.com/color/48/000000/mastercard.png" height="25" />
-                <img src="https://img.icons8.com/color/48/000000/mpesa.png" height="25" />
-            </div>
-        </div>
-    </div>
-</footer>
+    <a href="https://wa.me/254722682129" target="_blank" class="whatsapp-float"><i class="fab fa-whatsapp"></i></a>
 
-<script src="/resources/base/base.js"></script>
+    <script src="/resources/base/base.js"></script>
 
     <script>
 
@@ -1396,8 +594,6 @@
             }
         }
     </script>
-    <script src="/resources/base/base.js"></script>
-    
 <script>
     function renderCartPage() {
         const container = document.getElementById('cart-main-container');
@@ -1525,6 +721,7 @@
     }
 
     function proceedToCheckout() {
+        showCheckoutLoader(true)
         const uid = localStorage.getItem('temp_id') || crypto.randomUUID(4)
         let ids = []
         cart.forEach(i=>{
@@ -1544,15 +741,32 @@
         .then(r=>r.json())
         .then(data=>{
             if(data.success && data.order_id){
+                showCheckoutLoader(false)
                 localStorage.setItem('temp_id', uid)
                window.location.href = `/checkout/?order=${data.order_id}`
             } else{
+                showCheckoutLoader(false)
                 showAlert('error', data.error || 'An error occured')
             }
         })
         .catch(e=>{
             showAlert('error', e.message)
+            showCheckoutLoader(false)
+
         })
+    }
+
+    function showCheckoutLoader(show){
+        const btn = document.querySelector('#proceedToCheckout')
+
+        if(show){
+            btn.disabled = true
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> CREATING YOUR ORDER...'
+        } else{
+            btn.innerHTML = '<i class="fas fa-lock"></i> SECURE CHECKOUT'
+            btn.disabled = false
+        }
+
     }
 
     window.addEventListener('load', renderCartPage);

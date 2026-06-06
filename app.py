@@ -613,9 +613,7 @@ def checkout():
 
         if not ord:
             return jsonify({"error": "Order not found"}), 404
-
-        # Order data expected:
-        # [{"id":"BK-98VH","qty":2}, {"id":"BK-E27D","qty":1}]
+        
         items = ord.data
 
         subtotal = 0
@@ -656,18 +654,15 @@ def checkout():
 
         checkout_request_id = payment_res.get("CheckoutRequestID")
 
-        checkout_order = Order(
-            name=name,
-            email=email,
-            phone=phone,
-            city=county,
-            address=address,
-            grand_total=grand_total,
-            checkout_request_id=checkout_request_id,
-            status="PENDING"
-        )
+        ord.name=name
+        ord.email=email
+        ord.phone=phone
+        ord.city=county
+        ord.address=address
+        ord.grand_total=grand_total
+        ord.checkout_request_id=checkout_request_id
+        ord.status="INITIATED"
 
-        db.session.add(checkout_order)
         db.session.commit()
 
         return jsonify({
@@ -830,6 +825,21 @@ def authorize_admin(staff):
     else:
         return jsonify({'msg':f'Welcome back {staff.name}'}), 200
 
+
+@app.route('/admin/get-orders')
+@protected
+def get_orders(adm):
+    orders = Order.query.all()
+    return jsonify({'orders':[{
+        'id':o.id,
+        "city":o.city,
+        "name":o.name,
+        "status":o.status,
+        "total":o.grand_total,
+        "cid":o.checkout_request_id,
+        "phone":o.phone,
+        "email":o.email
+        } for o in orders]})
 
 # @app.route('/admin/api/add-staff', methods=['POST'])
 # @protected

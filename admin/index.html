@@ -147,6 +147,15 @@
             animation: shrinkProgress linear forwards;
         }
 
+        #customer-details{
+            display: flex;
+            flex-direction: column;
+            span{
+                font-size:x-small;
+                color: grey;
+            }
+        }
+
         .notification.success .notification-progress {
             background: var(--success-color);
             opacity: 0.4;
@@ -163,6 +172,7 @@
             background: var(--info-color);
             opacity: 0.4;
         }
+
 
         @keyframes shrinkProgress {
             from { transform: scaleX(1); }
@@ -187,6 +197,14 @@
             .notification.hide {
                 transform: translateY(120%);
             }
+        }
+        td:has(#wsco){
+            display: flex;
+            flex-direction: column;
+        }
+        #wsco{
+            color: grey;
+            font-size: xx-small;
         }
     </style>
 
@@ -293,7 +311,7 @@
             
             <div style="margin-top: auto; padding-top: 30px;">
                 <a class="nav-item"><i class="fas fa-cog"></i> Settings</a>
-                <a href="login.html" class="nav-item"><i class="fas fa-sign-out-alt"></i> Logout</a>
+                <a href="/login/" class="nav-item"><i class="fas fa-sign-out-alt"></i> Logout</a>
             </div>
         </nav>
     </aside>
@@ -409,11 +427,17 @@
                     <div class="table-wrapper">
                         <table>
                             <thead>
-                                <tr><th>Order ID</th><th>Customer</th><th>Amount</th><th>Status</th></tr>
+                                <tr>
+                                <th>Order ID</th>
+                                <th>Customer</th>
+                                <th>Amount</th>
+                                <th>County</th>
+                                <th>Status</th>
+                            </tr>
                             </thead>
-                            <tbody>
-                                <tr><td>#TN-9902</td><td>Alice Wambui</td><td>KES 1,200</td><td><span class="status-pill status-success">Delivered</span></td></tr>
-                                <tr><td>#TN-9901</td><td>John Koech</td><td>KES 450</td><td><span class="status-pill status-success">Paid</span></td></tr>
+                            <tbody id="ordersTable">
+                                
+
                             </tbody>
                         </table>
                     </div>
@@ -627,7 +651,7 @@
                 fdb.style.color = 'red'
                 notify('Access Denied', get_text(err.message), 'error', 6000);
                 setTimeout(() => {
-                    window.location.href = 'login.html';
+                    window.location.href = '/login';
                 }, 3000);
             })
         }
@@ -638,21 +662,22 @@
                 : text
         }
         
-        document.addEventListener('DOMContentLoaded', () => {
+        document.addEventListener('DOMContentLoaded', async(e) => {
             window.token = getCookie('token')
             window.id = getCookie('sid')
         
             if (!window.token || !window.id) {
                 notify('Authentication Required', 'Not Logged in. Redirecting to login page...', 'warning', 4000);
                 setTimeout(() => {
-                    window.location.href = 'login.html';
+                    window.location.href = '/login';
                 }, 2000);
                 return;
             }
         
-            authorizeAdmin()
-            fetchBooks()
-            switchPage('inventory', document.querySelector('.nav-item'))
+            await authorizeAdmin()
+            await fetchBooks()
+            switchPage('orders', document.querySelector('.nav-item'))
+            await fetchOrders()
         })
         
         function fetchBooks() {
@@ -984,6 +1009,47 @@
                     clearInterval(interval)
                     div.remove()
                     resolve(false)
+                }
+            })
+        }
+        function fetchOrders(){
+            const table = document.querySelector('#ordersTable')
+            fetch(API_URL + '/admin/get-orders',{
+                headers: {
+                    'Authorization': 'Bearer ' + window.token,
+                    'X-UID': window.id
+                }
+            })
+            .then(r=>r.json())
+            .then(data=>{
+                if(data.orders){
+                    const orders = data.orders
+                    orders.forEach(o=>{
+
+                        const tr = document.createElement('tr')
+                        tr.innerHTML = `
+                        <td >
+                            ${o.id}
+                            <br>
+                            <span style="color:grey; font-size:xx-small;">
+                            ${o.phone || ''}
+                        </span>
+                        </td>
+                        <td id="customer-details">${o.name || ''} <span>
+                            ${o.email || '-'}
+                        </span>
+                        
+                    </td>
+                        <td> ${o.total ? 'KES' + (parseFloat(o.total)).toLocaleString() :  '-'}</td>
+                        <td>${o.city || '-'}</td>
+                        <td>
+                            <span class="status-pill status-${o.status ? String(o.status).toLocaleLowerCase() : 'initiated'}">${o.status || 'INITIATED'}</span>
+                            <span id="wsco" title=${o.cid || ''}> ${o.cid ? String(o.cid).slice(0, 20) + '...' : ''}</span>
+                        </td>
+                        
+                        `
+                        table.appendChild(tr)
+                    })
                 }
             })
         }
