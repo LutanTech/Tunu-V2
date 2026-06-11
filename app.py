@@ -110,6 +110,9 @@ class Book(db.Model):
     edited_at = db.Column(db.DateTime, default=lambda: datetime.utcnow() + timedelta(hours=3))
     edited_by = db.Column(db.String(20), db.ForeignKey('staff.id'), nullable=True)
     is_deleted = db.Column(db.Boolean, default=False)
+    views = db.Column(db.Integer, default=0, nullable=True)
+    blurb = db.Column(db.Text(9600), nullable=True )
+    
 
 
     def to_sale_dict(self):
@@ -295,7 +298,7 @@ def check_admin(staff_id):
     else :
         return True
 
-# @app.after_request
+@app.after_request
 def log_every_request(response):
     try:
         log = Log(
@@ -613,7 +616,9 @@ def checkout():
 
         if not ord:
             return jsonify({"error": "Order not found"}), 404
-        
+
+        # Order data expected:
+        # [{"id":"BK-98VH","qty":2}, {"id":"BK-E27D","qty":1}]
         items = ord.data
 
         subtotal = 0
@@ -654,15 +659,18 @@ def checkout():
 
         checkout_request_id = payment_res.get("CheckoutRequestID")
 
-        ord.name=name
-        ord.email=email
-        ord.phone=phone
-        ord.city=county
-        ord.address=address
-        ord.grand_total=grand_total
-        ord.checkout_request_id=checkout_request_id
-        ord.status="INITIATED"
+        checkout_order = Order(
+            name=name,
+            email=email,
+            phone=phone,
+            city=county,
+            address=address,
+            grand_total=grand_total,
+            checkout_request_id=checkout_request_id,
+            status="PENDING"
+        )
 
+        db.session.add(checkout_order)
         db.session.commit()
 
         return jsonify({
@@ -817,6 +825,13 @@ def delete_book(staff):
     except Exception as e:
         return jsonify({'error':f'Database error: {str(e)}'}), 500
 
+@app.route('/book/<string:book_id>')
+def book_detail(book_id):
+    book = Book.query.filter_by(id=book_id, is_deleted=False).first_or_404()
+    # book.views = (book.views or 0) + 1
+    # db.session.commit()
+    return jsonify({'book':book.to_sale_dict()})
+
 @app.route('/admin/api/authorize', methods=['POST'])
 @protected
 def authorize_admin(staff):
@@ -825,21 +840,6 @@ def authorize_admin(staff):
     else:
         return jsonify({'msg':f'Welcome back {staff.name}'}), 200
 
-
-@app.route('/admin/get-orders')
-@protected
-def get_orders(adm):
-    orders = Order.query.all()
-    return jsonify({'orders':[{
-        'id':o.id,
-        "city":o.city,
-        "name":o.name,
-        "status":o.status,
-        "total":o.grand_total,
-        "cid":o.checkout_request_id,
-        "phone":o.phone,
-        "email":o.email
-        } for o in orders]})
 
 # @app.route('/admin/api/add-staff', methods=['POST'])
 # @protected

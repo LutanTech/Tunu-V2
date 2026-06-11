@@ -6,8 +6,6 @@ updateCartUI();
 
 
 
-
-
 function switchTab(category) {
     document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('tab-active'));
     document.getElementById(`tab-${category}`).classList.add('tab-active');

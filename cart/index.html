@@ -503,29 +503,29 @@
             const mobile_inp = document.querySelector('#mobile-menu-search')
             const sbtn = document.querySelector('.search-btn')
             const mobile_sbtn = document.querySelector('#mobile-search-btn')
-            let query = inp.value || mobile_inp.value
+            let query = inp? inp.value : '' || mobile_inp ? mobile_inp.value : '';
 
-            inp.addEventListener('keypress', (e)=>{
+            inp?.addEventListener('keypress', (e)=>{
                 query = inp.value
                 if(e.key == 'Enter'){
                     window.location.href = '/search?q=' + query
                 }
             })
 
-            sbtn.addEventListener('click', (e)=>{
+            sbtn?.addEventListener('click', (e)=>{
                 query = inp.value
                 window.location.href = '/search?q=' + query
             })
 
 
-            mobile_inp.addEventListener('keypress', (e)=>{
+            mobile_inp?.addEventListener('keypress', (e)=>{
                 query = mobile_inp.value
                 if(e.key == 'Enter'){
                     window.location.href = '/search?q=' + query
                 }
             })
 
-            mobile_sbtn.addEventListener('click', (e)=>{
+            mobile_sbtn?.addEventListener('click', (e)=>{
                 query = mobile_inp.value
                 window.location.href = '/search?q=' + query
             })
@@ -617,7 +617,7 @@
         let subtotal = 0;
         let itemsHtml = '';
 
-        cart.forEach((item, index) => {
+        cart?.forEach((item, index) => {
             const itemTotal = item.newPrice * item.quantity;
             subtotal += itemTotal;
             itemsHtml += `
