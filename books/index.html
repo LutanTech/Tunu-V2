@@ -1155,7 +1155,7 @@
                 <span id="cart-total" style="color:var(--magenta);">KES 0</span>
             </div>
             <button class="checkout-btn" onclick="secureCheckout()">
-                <i class="fab fa-whatsapp"></i> SECURE CHECKOUT
+                <i class="fas fa-lock"></i> SECURE CHECKOUT
             </button>
         </div>
     </div>
@@ -1837,11 +1837,11 @@
         }
 
         function saveCartToStorage() {
-            localStorage.setItem('tunu_cart', JSON.stringify(cart));
+            localStorage.setItem('cart', JSON.stringify(cart));
         }
 
         function loadCartFromStorage() {
-            const stored = localStorage.getItem('tunu_cart');
+            const stored = localStorage.getItem('cart');
             if (stored) {
                 try {
                     cart = JSON.parse(stored);
@@ -1854,10 +1854,7 @@
 
         function secureCheckout() {
             if (cart.length === 0) return;
-            const messageParts = cart.map(i => `${i.title} (Qty: ${i.quantity})`);
-            const totalText = document.getElementById('cart-total').textContent;
-            const whatsappText = `Hello TUNU Publishers, I would like to order:\n\n${messageParts.join('\n')}\n\nTotal Amount: ${totalText}`;
-            window.open(`https://wa.me/254722682129?text=${encodeURIComponent(whatsappText)}`, '_blank');
+            window.location.href = '/cart'
         }
 
         searchInput.addEventListener('input', applyFilters);
