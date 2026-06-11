@@ -1788,7 +1788,7 @@
             } else {
                 listContainer.innerHTML = '';
                 cart.forEach(item => {
-                    total += item.price * item.quantity;
+                    total += item.newPrice * item.quantity;
                     totalItemsCount += item.quantity;
 
                     const cartItemEl = document.createElement('div');
@@ -1798,7 +1798,7 @@
                         <img src="${imgUrl}" onerror="this.src='/assets/images/logo.png'; this.style.objectFit='contain';" alt="${item.title}">
                         <div class="cart-item-details">
                             <h5 class="cart-item-title">${item.title}</h5>
-                            <div class="cart-item-price">KES ${item.price}</div>
+                            <div class="cart-item-price">KES ${item.newPrice}</div>
                             <div class="cart-item-qty">
                                 <button class="qty-btn" onclick="changeQuantity('${item.id}', -1)">-</button>
                                 <span>${item.quantity}</span>
