@@ -693,7 +693,20 @@
             </div>
         </div>
     </div>
-
+    <div class="mobile-nav-drawer" id="mobile-nav-drawer">
+        <div class="mobile-nav-header">
+            <h3>Navigation</h3>
+            <button onclick="toggleMobileNav()" style="background:none; border:none; color:white; cursor:pointer; font-size:24px;"><i class="fas fa-times-circle"></i></button>
+        </div>
+        <div class="mobile-nav-links">
+            <a href="#" class="nav-link active">Home</a>
+            <a href="/books" class="nav-link">Books</a>
+            <a href="/books/?cat=junior" class="nav-link">Junior School</a>
+            <a href="/books/?cat=revision" class="nav-link">Revision</a>
+            <a href="/about" class="nav-link">About Us</a>
+            <a href="/contact-us" class="nav-link">Contact</a>
+        </div>
+    </div>
     <header>
         <div class="container header-content">
             <a href="#" class="logo-area">
@@ -704,16 +717,22 @@
                 </div>
             </a>
             <nav>
-                <a href="#" class="nav-link">Home</a>
-                <a href="#" class="nav-link">Books</a>
-                <a href="#" class="nav-link">Junior School</a>
-                <a href="#" class="nav-link">Revision</a>
-                <a href="#" class="nav-link">About Us</a>
-                <a href="#" class="nav-link">Contact</a>
+                <a href="#" class="nav-link active">Home</a>
+                <a href="/books" class="nav-link">Books</a>
+                <a href="/books/?cat=junior" class="nav-link">Junior School</a>
+                <a href="/books/?cat=revision" class="nav-link">Revision</a>
+                <a href="/about/" class="nav-link">About Us</a>
+                <a href="contact-us" class="nav-link">Contact</a>
             </nav>
-            <button class="mobile-menu-btn" onclick="openCart()" style="background:none; border:none; color:white; font-size:24px; cursor:pointer;">
-                <i class="fas fa-shopping-cart"></i>
-            </button>
+            <div class="mobile-header-actions">
+                <button onclick="toggleMobileNav()" class="header-icon-btn">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <button onclick="openCart()" class="header-icon-btn">
+                    <i class="fas fa-shopping-cart"></i>
+                </button>
+            </div>
+            
         </div>
     </header>
 
@@ -815,9 +834,9 @@
                     <p style="color:#ccc; font-size:14px; line-height:1.8; max-width:250px;">Innovative educational solutions crafted for  learners. We bridge the gap between curriculum and understanding with relevant content.</p>
                     <div class="social-links">
                         <a href="https://www.facebook.com/p/TUNU-Publishers-61565538623974/" target="_blank"><i class="fab fa-facebook-f"></i></a>
-                        <a href="#"><i class="fab fa-twitter"></i></a>
-                        <a href="#"><i class="fab fa-instagram"></i></a>
-                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#" id="twitter-link"><i class="fab fa-twitter"></i></a>
+                        <a href="#" id="instagram-link"><i class="fab fa-instagram"></i></a>
+                        <a href="#" id="linkedIn-link"><i class="fab fa-linkedin-in"></i></a>
                     </div>
                 </div>
     
@@ -826,9 +845,9 @@
                     <ul class="footer-links">
                         <li><a href="/">Home</a></li>
                         <li><a href="/about">About TUNU</a></li>
-                        <li><a href="/books?cat=primary">Primary Books</a></li>
-                        <li><a href="/books?cat=junior">Junior Secondary</a></li>
-                        <li><a href="/books?cat=junior">Revision Guides</a></li>
+                        <li><a href="/books/?cat=primary">Primary Books</a></li>
+                        <li><a href="/books/?cat=junior">Junior Secondary</a></li>
+                        <li><a href="/books/?cat=junior">Revision Guides</a></li>
                     </ul>
                 </div>
     
@@ -848,8 +867,8 @@
                     <ul class="footer-contact">
                         <li><i class="fas fa-map-marker-alt"></i> Harambee Sacco Shopping Centre, Nairobi, Kenya</li>
                         <li><i class="fas fa-phone-alt"></i> +254 722 68 21 29</li>
-                        <li><i class="fas fa-envelope"></i> info@tunupublishers.com</li>
-                        <li><i class="fas fa-clock"></i> Mon-Sat: 8:00am - 6:00pm</li>
+                        <li><i class="fas fa-envelope"></i> tunupublishers@gmail.com</li>
+                        <li><i class="fas fa-clock"></i> Mon-Sat: 8:00am - 5:00pm</li>
                     </ul>
                 </div>
             </div>
@@ -891,7 +910,7 @@
         let booksData = []
 
         function fetchBooks(){
-            fetch(`${API_URL}/get_books`)
+            fetch(`${API_URL}/get_books?filters=1`)
             .then(r=>r.json())
             .then(data=>{
                 booksData = data
@@ -913,6 +932,7 @@
         function renderBooks(category) {
             const container = document.getElementById('book-container');
             const books = booksData[category];
+            console.log(books)
             container.innerHTML = '';
             books.forEach(book => {
                 container.innerHTML += `

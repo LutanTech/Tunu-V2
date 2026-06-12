@@ -1005,8 +1005,8 @@
         }
 
         footer {
-            background: #151515;
-            color: #e9ecef;
+            background: #1c0218;
+            color: #37013b;
             padding: 80px 0 24px 0;
             margin-top: 80px;
             border-top: 5px solid var(--magenta);
@@ -1020,6 +1020,12 @@
 
         .footer-col-about {
             flex: 1 1 100%;
+        }
+        .footer-col h4{
+            color: orangered !important;
+            text-transform: uppercase;
+            border-left: 4px solid orangered;
+            padding-left: 10px;
         }
 
         .footer-col {
@@ -1129,12 +1135,12 @@
             <button onclick="toggleMobileNav()" style="background:none; border:none; color:white; cursor:pointer; font-size:24px;"><i class="fas fa-times-circle"></i></button>
         </div>
         <div class="mobile-nav-links">
-            <a href="#" class="nav-link active">Home</a>
+            <a href="/" class="nav-link active">Home</a>
             <a href="#" class="nav-link">Books</a>
-            <a href="#" class="nav-link">Junior School</a>
-            <a href="#" class="nav-link">Revision</a>
-            <a href="#" class="nav-link">About Us</a>
-            <a href="#" class="nav-link">Contact</a>
+            <a href="/books/?cat=junior" class="nav-link">Junior School</a>
+            <a href="/books/?cat=revision" class="nav-link">Revision</a>
+            <a href="/about" class="nav-link">About Us</a>
+            <a href="/contact-us" class="nav-link">Contact</a>
         </div>
     </div>
 
@@ -1186,12 +1192,12 @@
                 </div>
             </a>
             <nav>
-                <a href="#" class="nav-link active">Home</a>
-                <a href="#" class="nav-link">Books</a>
-                <a href="#" class="nav-link">Junior School</a>
-                <a href="#" class="nav-link">Revision</a>
-                <a href="#" class="nav-link">About Us</a>
-                <a href="#" class="nav-link">Contact</a>
+                <a href="/" class="nav-link ">Home</a>
+                <a href="#" class="nav-link active">Books</a>
+                <a href="/books/?cat=junior" class="nav-link">Junior School</a>
+                <a href="/books/?cat=revision" class="nav-link">Revision</a>
+                <a href="/about" class="nav-link">About Us</a>
+                <a href="/contact-us" class="nav-link">Contact</a>
             </nav>
             <div class="mobile-header-actions">
                 <button onclick="toggleMobileNav()" class="header-icon-btn">
@@ -1279,61 +1285,67 @@
     </main>
 
     <footer>
+
         <div class="container">
             <div class="footer-grid">
-                <div class="footer-col-about">
-                    <h3 style="display:flex; align-items:center; gap:10px;">
-                        <img src="/assets/images/logo.png" alt="Logo" height="40" onerror="this.src='https://placehold.co/50x50'">
+                <div>
+                    <h3 style="margin-bottom:20px; display:flex; align-items:center; gap:10px;">
+                        <img src="/assets/images/logo.png" height="35" style=" padding:2px; border-radius:3px;">
                         TUNU PUBLISHERS
                     </h3>
-                    <p style="color:#adb5bd; font-size:14px; line-height:1.8; margin-top:15px;">Innovative educational solutions crafted for learners. We bridge the gap between curriculum and understanding with relevant content.</p>
+                    <p style="color:#ccc; font-size:14px; line-height:1.8; max-width:250px;">Innovative educational solutions crafted for  learners. We bridge the gap between curriculum and understanding with relevant content.</p>
                     <div class="social-links">
                         <a href="https://www.facebook.com/p/TUNU-Publishers-61565538623974/" target="_blank"><i class="fab fa-facebook-f"></i></a>
-                        <a href="#"><i class="fab fa-twitter"></i></a>
-                        <a href="#"><i class="fab fa-instagram"></i></a>
-                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#" id="twitter-link"><i class="fab fa-twitter"></i></a>
+                        <a href="#" id="instagram-link"><i class="fab fa-instagram"></i></a>
+                        <a href="#" id="linkedIn-link"><i class="fab fa-linkedin-in"></i></a>
                     </div>
                 </div>
+    
                 <div class="footer-col">
-                    <h4>Quick Links</h4>
+                    <h4>Quick Links</h4> 
                     <ul class="footer-links">
                         <li><a href="/">Home</a></li>
                         <li><a href="/about">About TUNU</a></li>
-                        <li><a href="/books">Primary Books</a></li>
-                        <li><a href="/books">Junior Secondary</a></li>
-                        <li><a href="/books">Revision Guides</a></li>
+                        <li><a href="/books/?cat=primary">Primary Books</a></li>
+                        <li><a href="/books/?cat=junior">Junior Secondary</a></li>
+                        <li><a href="/books/?cat=junior">Revision Guides</a></li>
                     </ul>
                 </div>
+    
                 <div class="footer-col">
                     <h4>Support</h4>
                     <ul class="footer-links">
-                        <li><a href="#">Order Tracking</a></li>
-                        <li><a href="#">Delivery Policy</a></li>
-                        <li><a href="#">Privacy Policy</a></li>
-                        <li><a href="#">Terms of Service</a></li>
-                        <li><a href="#">Contact Us</a></li>
+                        <li><a href="/orders">Order Tracking</a></li>
+                        <li><a href="/delivery_policy">Delivery Policy</a></li>
+                        <li><a href="/privacy_policy">Privacy Policy</a></li>
+                        <li><a href="/terms_of_service">Terms of Service</a></li>
+                        <li><a href="/contact_us">Contact Us</a></li>
                     </ul>
                 </div>
+    
                 <div class="footer-col">
                     <h4>Contact Info</h4>
                     <ul class="footer-contact">
                         <li><i class="fas fa-map-marker-alt"></i> Harambee Sacco Shopping Centre, Nairobi, Kenya</li>
                         <li><i class="fas fa-phone-alt"></i> +254 722 68 21 29</li>
-                        <li><i class="fas fa-envelope"></i> info@tunupublishers.com</li>
-                        <li><i class="fas fa-clock"></i> Mon-Sat: 8:00am - 6:00pm</li>
+                        <li><i class="fas fa-envelope"></i> tunupublishers@gmail.com</li>
+                        <li><i class="fas fa-clock"></i> Mon-Sat: 8:00am - 5:00pm</li>
                     </ul>
                 </div>
             </div>
+    
             <div class="footer-bottom">
                 <p>&copy; 2026 TUNU Publishers Limited. All Rights Reserved.</p>
-                <div style="margin-top:20px; display:flex; justify-content:center; gap:12px; opacity:0.8;">
-                    <img src="https://img.icons8.com/color/48/000000/visa.png" height="28" alt="Visa"/>
-                    <img src="https://img.icons8.com/color/48/000000/mastercard.png" height="28" alt="Mastercard"/>
-                    <img src="https://img.icons8.com/color/48/000000/mpesa.png" height="28" alt="Mpesa"/>
+                <div style="margin-top:15px; display:flex; justify-content:center; gap:10px; opacity:0.6;">
+                    <img src="https://img.icons8.com/color/48/000000/visa.png" height="25" />
+                    <img src="https://img.icons8.com/color/48/000000/mastercard.png" height="25" />
+                    <img src="https://img.icons8.com/color/48/000000/mpesa.png" height="25" />
                 </div>
             </div>
         </div>
     </footer>
+    
 
     <a href="https://wa.me/254722682129" target="_blank" class="whatsapp-float"><i class="fab fa-whatsapp"></i></a>
 
@@ -1358,6 +1370,8 @@
         const priceRangeInput = document.getElementById('price-range');
         const authorsListContainer = document.getElementById('authors-list-container');
         const resultsCountText = document.getElementById('results-count-text');
+        let loading = false;
+
 
         if (typeof cart === 'undefined') {
             window.cart = [];
@@ -1388,48 +1402,44 @@
             fetchBooks();
             setupIntersectionObserver();
             document.getElementById('load-more-btn').addEventListener('click', () => {
-                renderBatch();
+                currentPage++;
+                fetchBooks(false);
             });
         }
+        let currentPage = 1;
+        let hasNext = true;
 
-        function fetchBooks() {
-            const apiEndpoint = (typeof API_URL !== 'undefined') ? `${API_URL}/get_books` : null;
-            if (apiEndpoint) {
-                fetch(apiEndpoint)
-                    .then(response => response.json())
-                    .then(data => {
-                        if (data.rating) {
-                            initialBooks = data.rating;
-                        } else if (Array.isArray(data)) {
-                            initialBooks = data;
-                        } else {
-                            initialBooks = Object.values(data).flat();
-                        }
-                        preloadBookImages();
-                        setupFiltersAndGrades();
-                    })
-                    .catch(err => {
-                        useFallbackData();
-                    });
+
+
+function fetchBooks(reset = true) {
+
+    if (loading || !hasNext) return;
+
+    loading = true;
+
+    fetch(`${API_URL}/get_books?page=${currentPage}`)
+        .then(res => res.json())
+        .then(data => {
+
+            hasNext = data.has_next;
+
+            if (reset) {
+                initialBooks = data.books;
+                applyFilters();
             } else {
-                useFallbackData();
+                initialBooks.push(...data.books);
+                filteredBooks.push(...data.books);
+                renderBatch();
             }
-        }
+        })
+        .finally(() => {
+            loading = false;
+        });
+}
 
         function useFallbackData() {
             initialBooks = [
-                { id: "BK-E27D", title: "Kudurusu Fasihi", authors: "Sussy Nandama Sumbi , Valentine Andugosi Akisa", oldPrice: 0.0, newPrice: 600.0, grade: "General", url: "resources/books/covers/IMG-LOO19YS4.jpeg", added_at: "Wed, 03 Jun 2026 14:53:07 GMT" },
-                { id: "BK-98VH", title: "Kosa la Popo", authors: "Sussy Nandama Sumbi , Timothy Omusikoyo Sumba", oldPrice: 350.0, newPrice: 300.0, grade: "5a", url: "resources/books/covers/IMG-KHZT7753.jpeg", added_at: "Wed, 03 Jun 2026 15:03:19 GMT" },
-                { id: "BK-KJ9Q", title: "Lulu Diwani ya Mashairi", authors: "Sussy Nandama Sumbi, Hamdan Mohamed Juma", oldPrice: 0.0, newPrice: 500.0, grade: "General", url: "resources/books/covers/IMG-L62YO69J.jpeg", added_at: "Wed, 03 Jun 2026 15:25:07 GMT" },
-                { id: "BK-E46T", title: "Mizani", authors: "Sussy Nandama Sumbi , Timothy Omusikoyo Sumba", oldPrice: 0.0, newPrice: 500.0, grade: "General", url: "resources/books/covers/IMG-NYS1IJ03.jpeg", added_at: "Wed, 03 Jun 2026 15:28:37 GMT" },
-                { id: "BK-E3E7", title: "Uandishi na Uhariri; Mbinu za Nadharia", authors: "Vincent Njeru Magugu, Timothy Omusikoyo Sumba, Beverlyne Asiko Ambuyo", oldPrice: 1600.0, newPrice: 1500.0, grade: "General", url: "resources/books/covers/IMG-Q57097LJ.jpeg", added_at: "Wed, 03 Jun 2026 15:57:15 GMT" },
-                { id: "BK-4WX5", title: "Samahani na Hadithi Nyingine", authors: "Sussy Nandama Sumbi , Timothy Omusikoyo Sumba, Kikechi Kombo", oldPrice: 650.0, newPrice: 600.0, grade: "General", url: "resources/books/covers/IMG-ICTX17UZ.jpeg", added_at: "Wed, 03 Jun 2026 16:15:20 GMT" },
-                { id: "BK-99XD", title: "Huba", authors: "Alvine Sungu", oldPrice: 460.0, newPrice: 400.0, grade: "Above 9 Years", url: "resources/books/covers/IMG-Q0TOG0U1.jpeg", added_at: "Mon, 08 Jun 2026 11:34:14 GMT" },
-                { id: "BK-YRIU", title: "CRE (Revision)", authors: "Rehema Mercy Makokha", oldPrice: 750.0, newPrice: 700.0, grade: "Grades 10, 11 and 12", url: "resources/books/covers/IMG-N33QOYFN.jpeg", added_at: "Mon, 08 Jun 2026 11:36:07 GMT" },
-                { id: "BK-1QPT", title: "Chaurembo", authors: "Rajabu Ali Mattaza", oldPrice: 0.0, newPrice: 500.0, grade: "Junior School and Above", url: "resources/books/covers/IMG-64R4CKKO.jpeg", added_at: "Mon, 08 Jun 2026 11:51:43 GMT" },
-                { id: "BK-Y3C6", title: "Mikono Safi", authors: "Edward Lokidor", oldPrice: 50.0, newPrice: 300.0, grade: "1", url: "resources/books/covers/IMG-UC6I3N1A.jpeg", added_at: "Mon, 08 Jun 2026 11:55:22 GMT" },
-                { id: "BK-DPAA", title: "Submission is not Bondage", authors: "Jacob Omolo", oldPrice: 0.0, newPrice: 500.0, grade: "Grade 7 and Above", url: "resources/books/covers/IMG-SMX4AXXM.jpeg", added_at: "Mon, 08 Jun 2026 12:15:36 GMT" },
-                { id: "BK-PSWG", title: "Nuru Gizani", authors: "P. I. Iribemwangi, Peter K. Kilonzo", oldPrice: 520.0, newPrice: 500.0, grade: "Junior School and Above", url: "resources/books/covers/IMG-EVW40PEV.jpeg", added_at: "Mon, 08 Jun 2026 12:19:50 GMT" }
+                
             ];
             preloadBookImages();
             setupFiltersAndGrades();
@@ -1587,7 +1597,6 @@
             displayedCount = 0;
             loadCount = 0;
             bookContainer.innerHTML = '';
-            resultsCountText.scrollIntoView()
             resultsCountText.textContent = `Showing ${filteredBooks.length} book${filteredBooks.length !== 1 ? 's' : ''}`;
             
             if (filteredBooks.length === 0) {
@@ -1678,16 +1687,18 @@
 
         function setupIntersectionObserver() {
             const observer = new IntersectionObserver(entries => {
-                if (entries[0].isIntersecting && displayedCount < filteredBooks.length && loadCount < 3) {
-                    spinner.style.display = 'block';
-                    setTimeout(() => {
-                        renderBatch();
-                    }, 400);
+        
+                if (
+                    entries[0].isIntersecting &&
+                    hasNext &&
+                    !loading
+                ) {
+                    currentPage++;
+                    fetchBooks(false);
                 }
-            }, {
-                rootMargin: '100px',
-                threshold: 0.1
+        
             });
+        
             observer.observe(scrollSentinel);
         }
 

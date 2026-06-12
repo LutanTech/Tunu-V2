@@ -1,4 +1,5 @@
 window.API_URL= 'https://rizz.tunupublishers.com'
+// window.API_URL= 'http://127.0.0.1:5000'
 
 
 let cart = JSON.parse(localStorage.getItem('cart')) || [];
@@ -92,5 +93,24 @@ function openCart() {
 
 function closeCart() {
     document.getElementById('cart-drawer').classList.remove('open');
+    document.getElementById('overlay').style.display = 'none';
+}
+
+
+function toggleMobileNav() {
+    const drawer = document.getElementById('mobile-nav-drawer');
+    const overlay = document.getElementById('overlay');
+    drawer.classList.toggle('open');
+    if (drawer.classList.contains('open')) {
+        overlay.style.display = 'block';
+    } else {
+        overlay.style.display = 'none';
+    }
+}
+function closeAllDrawers() {
+    closeCart();
+    closeFilters();
+    toggleMobileNav()
+    document.getElementById('mobile-nav-drawer').classList.remove('open');
     document.getElementById('overlay').style.display = 'none';
 }

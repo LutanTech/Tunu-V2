@@ -111,6 +111,8 @@ class Book(db.Model):
     edited_by = db.Column(db.String(20), db.ForeignKey('staff.id'), nullable=True)
     is_deleted = db.Column(db.Boolean, default=False)
     views = db.Column(db.Integer, default=0, nullable=True)
+    stars = db.Column(db.Integer, default=0, nullable=True)
+
     blurb = db.Column(db.Text(9600), nullable=True )
     
 
@@ -410,8 +412,28 @@ def dummy():
 
 @app.route('/get_books', methods=['GET'])
 def get_books():
-    books = Book.query.all()
-    return jsonify({'rating': [b.to_sale_dict() for b in books if not b.is_deleted]})
+    if request.args.get('filters'):
+        top_viewed = (
+            Book.query
+            .filter_by(is_deleted=False)
+            .order_by(Book.views.desc())
+            .limit(5)
+            .all()
+        )
+
+        top_rated = (
+            Book.query
+            .filter_by(is_deleted=False)
+            .order_by(Book.stars.desc())
+            .limit(5)
+            .all()
+        )
+
+        return jsonify({
+            'selling': [b.to_sale_dict() for b in top_viewed],
+            'rating': [b.to_sale_dict() for b in top_rated]
+        })
+    books = Book.query.filter_by(isdeleted=False).all()
 
 
 @app.route('/get_subs', methods=['GET'])

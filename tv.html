@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Video Recorder</title>
+</head>
+<body>
+
+    <video id="preview" autoplay muted playsinline width="640"></video>
+    <br><br>
+
+    <button id="selectFolder">Select Folder</button>
+    <button id="start">Start Recording</button>
+    <button id="stop">Stop Recording</button>
+
+    <script>
+        let mediaRecorder;
+        let chunks = [];
+        let folderHandle = null;
+
+        const video = document.getElementById("preview");
+
+        async function initCamera() {
+            const stream = await navigator.mediaDevices.getUserMedia({
+                video: true,
+                audio: true
+            });
+
+            video.srcObject = stream;
+
+            mediaRecorder = new MediaRecorder(stream);
+
+            mediaRecorder.ondataavailable = e => {
+                chunks.push(e.data);
+            };
+
+            mediaRecorder.onstop = async () => {
+                const blob = new Blob(chunks, {
+                    type: "video/webm"
+                });
+
+                chunks = [];
+
+                if (!folderHandle) {
+                    alert("Select a folder first.");
+                    return;
+                }
+
+                const filename =
+                    "recording_" +
+                    new Date().toISOString().replace(/[:.]/g, "-") +
+                    ".webm";
+
+                const fileHandle =
+                    await folderHandle.getFileHandle(filename, {
+                        create: true
+                    });
+
+                const writable =
+                    await fileHandle.createWritable();
+
+                await writable.write(blob);
+                await writable.close();
+
+                alert("Video saved successfully!");
+            };
+        }
+
+        document.getElementById("selectFolder").onclick = async () => {
+            folderHandle = await window.showDirectoryPicker();
+        };
+
+        document.getElementById("start").onclick = () => {
+            chunks = [];
+            mediaRecorder.start();
+        };
+
+        document.getElementById("stop").onclick = () => {
+            mediaRecorder.stop();
+        };
+
+        initCamera();
+    </script>
+
+</body>
+</html>
