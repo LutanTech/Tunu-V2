@@ -206,8 +206,76 @@
             color: grey;
             font-size: xx-small;
         }
+        .bg-red{
+            background: red;
+        }
+        .table-actions{
+            background: magenta;
+            padding: 10px;
+            display: flex;
+        }
+        .select label{
+            cursor: pointer;
+            user-select: none;
+        }
+        .actions-list{
+            display: flex;
+            gap: 5px;
+            margin-left: auto;
+        }
+        .actions-list div{
+            padding: 2px 10px;
+            background: black;
+            color: white;
+            border-radius: 5px;
+            border: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            gap: 2px;
+            font-size: small;
+            cursor: pointer;
+            user-select: none;
+            &:active{
+                scale: 0.98;
+            }
+        }
+        #contextMenu{
+            position:absolute;
+            display:none;
+            background:white;
+            min-width:180px;
+            border-radius:10px;
+            box-shadow:0 4px 15px rgba(0,0,0,.15);
+            overflow:hidden;
+            z-index:9999;
+        }
+        
+        #contextMenu div{
+            padding:12px;
+            cursor:pointer;
+        }
+        
+        #contextMenu div:hover{
+            background:#f5f5f5;
+        }
     </style>
 
+    <div id="contextMenu">
+        <h4><b>Order: </b> <span id="ord-name"></span></h4>
+        <div onclick="deleteOrder(currentOrderId)">
+            <i class="fas fa-trash"></i> Delete
+        </div>
+    
+        <div onclick="editOrder(currentOrderId)">
+            <i class="fas fa-pen"></i> Edit
+        </div>
+    
+        <div onclick="flagOrder(currentOrderId)">
+            <i class="fas fa-flag"></i> Flag
+        </div>
+    </div>
     <div class="notification-container" id="notificationContainer"></div>
 
     <div class="modal" id="modalPost">
@@ -291,7 +359,7 @@
 
     <aside class="sidebar" id="sidebar">
         <div class="sidebar-header">
-            <img src="https://i.ibb.co/CKRYPD4p/image.png" alt="TUNU" class="sidebar-logo">
+            <img src="/assets/images/logo.png" alt="TUNU" class="sidebar-logo">
             <div style="font-weight: 800; font-size: 0.75rem; letter-spacing: 2px;">ADMIN CONSOLE</div>
         </div>
         
@@ -422,9 +490,26 @@
                 <div class="card">
                     <div class="card-header">
                         <div class="card-title">Order Management</div>
+                        <div>
+                        <button class="btn-primary bg-red">Clear Cache</button>
                         <button class="btn-primary">Export CSV</button>
                     </div>
+                    </div>
                     <div class="table-wrapper">
+
+                        <div class="table-actions">
+                            <div class="select">
+                                <input type="checkbox" name="select-activate" id="select-activate"> 
+                                <label for="select-activate"> Select Orders</label>
+                            </div>
+                            <div class="actions-list">
+                                <div class="delete"> <i class="fas fa-trash"></i> Del</div>
+                                <div class="flag"><i class="fas fa-flag"></i>Flag</div>
+                                <div class="delete"> <i class="fas fa-eye"></i> Open</div>
+                                <div class="edit"> <i class="fas fa-pen"></i> Edit</div>
+                            </div>
+
+                        </div>
                         <table>
                             <thead>
                                 <tr>
@@ -433,6 +518,7 @@
                                 <th>Amount</th>
                                 <th>County</th>
                                 <th>Status</th>
+                                <th>Action</th>
                             </tr>
                             </thead>
                             <tbody id="ordersTable">
@@ -1024,35 +1110,76 @@
             .then(data=>{
                 if(data.orders){
                     const orders = data.orders
-                    orders.forEach(o=>{
+                    orders.forEach(o => {
 
-                        const tr = document.createElement('tr')
+                        const tr = document.createElement('tr');
+                    
                         tr.innerHTML = `
-                        <td >
+                        <td>
                             ${o.id}
                             <br>
-                            <span style="color:grey; font-size:xx-small;">
-                            ${o.phone || ''}
-                        </span>
+                            <span style="color:grey;font-size:xx-small;">
+                                ${o.phone || ''}
+                            </span>
                         </td>
-                        <td id="customer-details">${o.name || ''} <span>
-                            ${o.email || '-'}
-                        </span>
-                        
-                    </td>
-                        <td> ${o.total ? 'KES' + (parseFloat(o.total)).toLocaleString() :  '-'}</td>
+                    
+                        <td id="customer-details">
+                            ${o.name || ''}
+                            <span>${o.email || '-'}</span>
+                        </td>
+                    
+                        <td>${o.total ? 'KES ' + parseFloat(o.total).toLocaleString() : '-'}</td>
+                    
                         <td>${o.city || '-'}</td>
+                    
                         <td>
-                            <span class="status-pill status-${o.status ? String(o.status).toLocaleLowerCase() : 'initiated'}">${o.status || 'INITIATED'}</span>
-                            <span id="wsco" title=${o.cid || ''}> ${o.cid ? String(o.cid).slice(0, 20) + '...' : ''}</span>
+                            <span class="status-pill status-${o.status ? String(o.status).toLowerCase() : 'initiated'}">
+                                ${o.status || 'INITIATED'}
+                            </span>
+                    
+                            <span id="wsco" title="${o.cid || ''}">
+                                ${o.cid ? String(o.cid).slice(0,20) + '...' : ''}
+                            </span>
                         </td>
-                        
-                        `
-                        table.appendChild(tr)
-                    })
+                    
+                        <td>
+                            <i class="fas fa-ellipsis-v action-menu"></i>
+                        </td>
+                        `;
+                    
+                        tr.addEventListener('contextmenu', e => {
+                            e.preventDefault()
+                            showContextMenu(e.pageX, e.pageY, o.id, o.id);
+                        });
+                    
+                        table.appendChild(tr);
+                    });
                 }
             })
         }
+        let currentOrderId = null;
+
+function showContextMenu(x, y, orderId, orderName){
+
+    currentOrderId = orderId;
+
+    const menu = document.getElementById('contextMenu');
+    document.getElementById('ord-name').textContent = orderName
+
+    menu.style.left = x + 'px';
+    menu.style.top = y + 'px';
+    menu.style.display = 'block';
+}
+
+document.addEventListener('click', e => {
+
+    if(!e.target.closest('#contextMenu') &&
+       !e.target.closest('.action-menu')){
+
+        document.getElementById('contextMenu').style.display = 'none';
+    }
+
+});
     </script>
 </body>
 </html>

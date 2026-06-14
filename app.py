@@ -274,18 +274,18 @@ def protected(f):
         uid = request.headers.get("X-UID")
 
         if not token:
-            return jsonify({"error": "missing token"}), 401
+            return jsonify({"error": "Missing authorization credentials in request"}), 401
 
         if not uid:
-            return jsonify({"error": "missing uid"}), 401
+            return jsonify({"error": "Missing Administrator Unique Identifier in request"}), 401
 
         staff = Staff.query.filter_by(id=uid).first()
 
         if not staff:
-            return jsonify({"error": "invalid token"}), 403
+            return jsonify({"error": "Invalid authorization token in request"}), 403
 
         if str(staff.id) != str(uid):
-            return jsonify({"error": "uid mismatch"}), 403
+            return jsonify({"error": "Administrator Unique Identifier mismatch. Alert: Modified token"}), 403
 
         return f(staff, *args, **kwargs)
 
@@ -312,7 +312,7 @@ def log_every_request(response):
             status_code=response.status_code
         )
         db.session.add(log)
-        db.session.commit()
+        # db.session.commit()
     except Exception as e:
         print("Auto log failed:", e)
 
@@ -863,6 +863,15 @@ def authorize_admin(staff):
         return jsonify({'msg':f'Welcome back {staff.name}'}), 200
 
 
+@app.route('/admin/get-orders', methods=['GET'])
+@protected
+def get_orders(staff):
+    orders = Order.query.limit(20).all()
+    if not orders:
+        return jsonify({'error':'No Orders found'}), 404
+
+    return jsonify({'orders':[o.to_dict() for o in orders]}), 200
+
 # @app.route('/admin/api/add-staff', methods=['POST'])
 # @protected
 # def add_staff():
@@ -871,6 +880,7 @@ def authorize_admin(staff):
 #     if not data:
 #         return jsonify({'error':'Incomplete request. Please try again'}), 404
 #     new_staff = Staff(name=data.get(""))
+
     
 if __name__ == '__main__':
     with app.app_context():
